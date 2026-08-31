@@ -1,0 +1,3083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bismillah Educational Academy</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f4f6f9;color:#222}
+button{border:0;cursor:pointer}
+input,select{width:100%;padding:10px;border:1px solid #ccd2d9;border-radius:7px;margin:5px 0 12px}
+label{font-size:13px;font-weight:bold}
+.btn{padding:9px 13px;border-radius:7px;color:white;background:#356ae6;margin:3px}
+.green{background:#159447!important}.red{background:#d93434!important}
+.gray{background:#68707b!important}.orange{background:#e58a16!important}
+.small{padding:5px 8px;font-size:12px}
+.login{min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;background:#eef2f7}
+.login-box{width:100%;max-width:400px;background:white;padding:30px 25px;border-radius:15px;box-shadow:0 5px 25px #0002;text-align:center}
+.login-box h1{font-size:23px;margin-bottom:8px}
+.login-box p{color:#777;margin-bottom:20px}
+.app{display:none}
+header{background:#172b4d;color:white;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20}
+header h1{font-size:19px}
+header small{opacity:.8}
+.layout{display:flex;min-height:calc(100vh - 62px)}
+.sidebar{width:220px;background:#fff;border-right:1px solid #ddd;padding:10px}
+.sidebar button{width:100%;text-align:left;background:white;padding:11px;margin-bottom:3px;border-radius:7px}
+.sidebar button.active,.sidebar button:hover{background:#e9efff;color:#2458d7}
+.content{flex:1;padding:18px;overflow:auto}
+.page{display:none}.page.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:15px 0}
+.card,.panel{background:white;border-radius:10px;padding:16px;box-shadow:0 2px 8px #0001}
+.card h3{font-size:13px;color:#777;margin-bottom:7px}
+.card strong{font-size:24px}
+.panel{margin-bottom:16px}
+.title{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:13px}
+.toolbar{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.toolbar>*{max-width:220px}
+.table-wrap{width:100%;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:750px}
+th,td{padding:9px 7px;border-bottom:1px solid #e5e5e5;text-align:left;font-size:13px}
+th{background:#f3f5f8}
+.empty{text-align:center;color:#777;padding:25px}
+.badge{padding:4px 8px;border-radius:20px;font-size:11px}
+.paid,.active,.present{background:#dff5e7;color:#16743a}
+.unpaid,.inactive,.absent{background:#ffe2e2;color:#a11d1d}
+.partial,.leave{background:#fff0cf;color:#875600}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 12px}
+.modal{display:none;position:fixed;inset:0;background:#0007;z-index:100;justify-content:center;align-items:center;padding:15px}
+.modal.show{display:flex}
+.modal-box{background:white;width:100%;max-width:750px;max-height:92vh;overflow:auto;border-radius:12px;padding:18px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.close{background:#eee;padding:7px 10px;border-radius:6px}
+.notice{padding:11px;border-radius:7px;background:#eef4ff;color:#2458d7;margin-bottom:12px}
+.print-header{display:none;text-align:center;margin-bottom:18px}
+
+@media(max-width:900px){
+.cards{grid-template-columns:repeat(2,1fr)}
+.form-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:650px){
+.layout{display:block}
+.sidebar{width:100%;display:flex;overflow:auto;border-right:0;border-bottom:1px solid #ddd}
+.sidebar button{min-width:max-content;width:auto}
+.content{padding:10px}
+.form-grid{grid-template-columns:1fr}
+.cards{gap:7px}
+.card{padding:12px}
+}
+
+@media print{
+header,.sidebar,.no-print,.toolbar,button{display:none!important}
+.layout{display:block}
+.content{padding:0}
+.page{display:none!important}
+.page.printing{display:block!important}
+.print-header{display:block}
+.panel,.card{box-shadow:none}
+.table-wrap{overflow:visible}
+table{min-width:100%}
+th,td{border:1px solid #555}
+}
+</style>
+</head>
+
+<body>
+
+<div class="login" id="loginScreen">
+<div class="login-box">
+<h1>Bismillah Educational Academy</h1>
+<p>Fazaia State Jahanian</p>
+<label>Admin Password</label>
+<input type="password" id="loginPassword" placeholder="Enter password">
+<button class="btn" style="width:100%" onclick="login()">Login</button>
+<small>Default password: 12345</small>
+</div>
+</div>
+
+<div class="app" id="app">
+
+<header>
+<div>
+<h1 id="headName">Bismillah Educational Academy</h1>
+<small id="headCampus">Fazaia State Jahanian</small>
+</div>
+<button class="btn gray" onclick="logout()">Logout</button>
+</header>
+
+<div class="layout">
+
+<div class="sidebar">
+<button class="active" onclick="showPage('dashboard',this)">🏠 Dashboard</button>
+<button onclick="showPage('students',this)">👨‍🎓 Students</button>
+<button onclick="showPage('fees',this)">💰 Fees</button>
+<button onclick="showPage('attendance',this)">📋 Attendance</button>
+<button onclick="showPage('results',this)">📝 Results</button>
+<button onclick="showPage('reports',this)">📊 Reports</button>
+<button onclick="showPage('backup',this)">💾 Backup</button>
+<button onclick="showPage('settings',this)">⚙️ Settings</button>
+</div>
+
+<div class="content">
+
+<section class="page active" id="dashboard">
+<div class="print-header">
+<h1>Bismillah Educational Academy</h1>
+<p>Dashboard Report</p>
+</div>
+
+<h2>Dashboard</h2>
+
+<div class="cards">
+<div class="card"><h3>Total Students</h3><strong id="totalStudents">0</strong></div>
+<div class="card"><h3>Active Students</h3><strong id="activeStudents">0</strong></div>
+<div class="card"><h3>Inactive Students</h3><strong id="inactiveStudents">0</strong></div>
+<div class="card"><h3>Total Paid</h3><strong id="totalPaid">0</strong></div>
+</div>
+
+<div class="panel">
+<div class="title"><h3>Quick Actions</h3></div>
+<button class="btn green" onclick="openStudentModal()">+ Add Student</button>
+<button class="btn" onclick="openFeeModal()">+ Add Fee</button>
+<button class="btn orange" onclick="openAttendanceModal()">Attendance</button>
+<button class="btn gray" onclick="printPage('dashboard')">🖨️ Print / PDF</button>
+</div>
+
+<div class="panel">
+<h3>Recent Students</h3><br>
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Name</th><th>Father</th><th>Class</th><th>Status</th></tr>
+</thead>
+<tbody id="recentStudents"></tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section class="page" id="students">
+<div class="print-header">
+<h1>Bismillah Educational Academy</h1>
+<p>Students List</p>
+</div>
+
+<div class="panel">
+<div class="title">
+<h2>Students</h2>
+<div>
+<button class="btn green no-print" onclick="openStudentModal()">+ Add Student</button>
+<button class="btn gray no-print" onclick="printPage('students')">🖨️ Print / PDF</button>
+</div>
+</div>
+
+<div class="toolbar no-print">
+<input id="studentSearch" placeholder="Search student..." oninput="renderStudents()">
+<select id="studentClassFilter" onchange="renderStudents()"></select>
+<select id="studentStatusFilter" onchange="renderStudents()">
+<option value="">All Status</option>
+<option>Active</option>
+<option>Inactive</option>
+</select>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Father Name</th>
+<th>Roll No</th>
+<th>Class</th>
+<th>Mobile</th>
+<th>Admission</th>
+<th>Fee</th>
+<th>Status</th>
+<th class="no-print">Actions</th>
+</tr>
+</thead>
+<tbody id="studentsTable"></tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section class="page" id="fees">
+<div class="print-header">
+<h1>Bismillah Educational Academy</h1>
+<p>Fee History Report</p>
+</div>
+
+<div class="panel">
+<div class="title">
+<h2>Fees / Monthly History</h2>
+<div>
+<button class="btn green no-print" onclick="openFeeModal()">+ Add Fee</button>
+<button class="btn gray no-print" onclick="printPage('fees')">🖨️ Print / PDF</button>
+</div>
+</div>
+
+<div class="toolbar no-print">
+<select id="feeStudentFilter" onchange="renderFees()"></select>
+<select id="feeMonthFilter" onchange="renderFees()"></select>
+<select id="feeYearFilter" onchange="renderFees()"></select>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Student</th><th>Month</th><th>Year</th><th>Fee</th><th>Paid</th>
+<th>Due</th><th>Payment Date</th><th>Status</th><th class="no-print">Action</th>
+</tr>
+</thead>
+<tbody id="feesTable"></tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section class="page" id="attendance">
+<div class="print-header">
+<h1>Bismillah Educational Academy</h1>
+<p>Attendance Report</p>
+</div>
+
+<div class="panel">
+<div class="title">
+<h2>Attendance</h2>
+<div>
+<button class="btn green no-print" onclick="openAttendanceModal()">+ Mark Attendance</button>
+<button class="btn gray no-print" onclick="printPage('attendance')">🖨️ Print / PDF</button>
+</div>
+</div>
+
+<div class="toolbar no-print">
+<input type="date" id="attendanceDateFilter" onchange="renderAttendance()">
+<select id="attendanceClassFilter" onchange="renderAttendance()"></select>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Date</th><th>Student</th><th>Class</th><th>Status</th><th>Remarks</th>
+</tr>
+</thead>
+<tbody id="attendanceTable"></tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section class="page" id="results">
+<div class="print-header">
+<h1>Bismillah Educational Academy</h1>
+<p>Results Report</p>
+</div>
+
+<div class="panel">
+<div class="title">
+<h2>Tests & Results</h2>
+<div>
+<button class="btn green no-print" onclick="openResultModal()">+ Add Result</button>
+<button class="btn gray no-print" onclick="printPage('results')">🖨️ Print / PDF</button>
+</div>
+</div>
+
+<div class="toolbar no-print">
+<select id="resultStudentFilter" onchange="renderResults()"></select>
+<select id="resultClassFilter" onchange="renderResults()"></select>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Student</th><th>Class</th><th>Test</th><th>Subject</th>
+<th>Total</th><th>Obtained</th><th>%</th><th>Grade</th><th>Date</th>
+</tr>
+</thead>
+<tbody id="resultsTable"></tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section class="page" id="reports">
+<div class="print-header">
+<h1>Bismillah Educational Academy</h1>
+<p>Academy Report</p>
+</div>
+
+<div class="panel">
+<div class="title">
+<h2>Reports</h2>
+<button class="btn gray no-print" onclick="printPage('reports')">🖨️ Print / PDF</button>
+</div>
+
+<div class="cards">
+<div class="card"><h3>Total Fee</h3><strong id="reportTotalFee">0</strong></div>
+<div class="card"><h3>Total Paid</h3><strong id="reportPaid">0</strong></div>
+<div class="card"><h3>Total Due</h3><strong id="reportDue">0</strong></div>
+<div class="card"><h3>Total Results</h3><strong id="reportResults">0</strong></div>
+</div>
+</div>
+</section>
+
+<section class="page" id="backup">
+<div class="print-header">
+<h1>Bismillah Educational Academy</h1>
+<p>Backup</p>
+</div>
+
+<div class="panel">
+<div class="title">
+<h2>Backup & Restore</h2>
+<button class="btn gray no-print" onclick="printPage('backup')">🖨️ Print / PDF</button>
+</div>
+
+<div class="notice">
+Backup includes Students, Fees, Attendance and Results.
+</div>
+
+<button class="btn green" onclick="downloadBackup()">⬇️ Download Backup</button>
+<button class="btn orange" onclick="document.getElementById('restoreFile').click()">⬆️ Restore Backup</button>
+
+<input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreBackup(event)">
+
+<hr style="margin:18px 0">
+
+<button class="btn red" onclick="clearLocalData()">Clear Local Data</button>
+</div>
+</section>
+
+<section class="page" id="settings">
+<div class="panel">
+<h2>Settings</h2><br>
+
+<label>Academy Name</label>
+<input id="academyNameSetting">
+
+<label>Campus</label>
+<input id="campusSetting">
+
+<button class="btn green" onclick="saveSettings()">Save Settings</button>
+
+<hr style="margin:20px 0">
+
+<h3>Change Admin Password</h3><br>
+
+<input type="password" id="newPassword" placeholder="New password">
+
+<button class="btn" onclick="changePassword()">Change Password</button>
+</div>
+</section>
+
+</div>
+</div>
+</div>
+
+<!-- STUDENT MODAL -->
+<div class="modal" id="studentModal">
+<div class="modal-box">
+
+<div class="modal-head">
+<h2 id="studentModalTitle">Add Student</h2>
+<button class="close" onclick="closeModal('studentModal')">✕</button>
+</div>
+
+<input type="hidden" id="studentEditId">
+
+<div class="form-grid">
+
+<div>
+<label>Student Name *</label>
+<input id="studentName">
+</div>
+
+<div>
+<label>Father Name *</label>
+<input id="fatherName">
+</div>
+
+<div>
+<label>Roll No</label>
+<input id="rollNo">
+</div>
+
+<div>
+<label>Class *</label>
+<select id="className"></select>
+</div>
+
+<div>
+<label>Mobile No</label>
+<input id="mobileNo">
+</div>
+
+<div>
+<label>Admission Date</label>
+<input type="date" id="admissionDate">
+</div>
+
+<div>
+<label>Monthly Fee</label>
+<input type="number" id="monthlyFee">
+</div>
+
+<div>
+<label>Status</label>
+<select id="studentStatus">
+<option>Active</option>
+<option>Inactive</option>
+</select>
+</div>
+
+</div>
+
+<button class="btn green" onclick="saveStudent()">Save Student</button>
+<button class="btn gray" onclick="closeModal('studentModal')">Cancel</button>
+
+</div>
+</div>
+
+<!-- FEE MODAL -->
+<div class="modal" id="feeModal">
+<div class="modal-box">
+
+<div class="modal-head">
+<h2>Monthly Fee</h2>
+<button class="close" onclick="closeModal('feeModal')">✕</button>
+</div>
+
+<div class="form-grid">
+
+<div>
+<label>Student *</label>
+<select id="feeStudent"></select>
+</div>
+
+<div>
+<label>Fee Month *</label>
+<select id="feeMonth"></select>
+</div>
+
+<div>
+<label>Fee Year *</label>
+<input type="number" id="feeYear">
+</div>
+
+<div>
+<label>Amount</label>
+<input type="number" id="feeAmount">
+</div>
+
+<div>
+<label>Paid Amount</label>
+<input type="number" id="paidAmount">
+</div>
+
+<div>
+<label>Payment Date</label>
+<input type="date" id="paymentDate">
+</div>
+
+<div>
+<label>Status</label>
+<select id="feeStatus">
+<option>Paid</option>
+<option>Partial</option>
+<option>Unpaid</option>
+</select>
+</div>
+
+<div>
+<label>Notes</label>
+<input id="feeNotes">
+</div>
+
+</div>
+
+<button class="btn green" onclick="saveFee()">Save Fee</button>
+<button class="btn gray" onclick="closeModal('feeModal')">Cancel</button>
+
+</div>
+</div>
+
+<!-- ATTENDANCE MODAL -->
+<div class="modal" id="attendanceModal">
+<div class="modal-box">
+
+<div class="modal-head">
+<h2>Mark Attendance</h2>
+<button class="close" onclick="closeModal('attendanceModal')">✕</button>
+</div>
+
+<label>Date</label>
+<input type="date" id="attendanceDate">
+
+<label>Student</label>
+<select id="attendanceStudent"></select>
+
+<label>Status</label>
+<select id="attendanceStatus">
+<option>Present</option>
+<option>Absent</option>
+<option>Leave</option>
+</select>
+
+<label>Remarks</label>
+<input id="attendanceRemarks">
+
+<button class="btn green" onclick="saveAttendance()">Save Attendance</button>
+<button class="btn gray" onclick="closeModal('attendanceModal')">Cancel</button>
+
+</div>
+</div>
+
+<!-- RESULT MODAL -->
+<div class="modal" id="resultModal">
+<div class="modal-box">
+
+<div class="modal-head">
+<h2>Add Result</h2>
+<button class="close" onclick="closeModal('resultModal')">✕</button>
+</div>
+
+<div class="form-grid">
+
+<div>
+<label>Student</label>
+<select id="resultStudent"></select>
+</div>
+
+<div>
+<label>Test Name</label>
+<input id="testName">
+</div>
+
+<div>
+<label>Subject</label>
+<input id="subject">
+</div>
+
+<div>
+<label>Total Marks</label>
+<input type="number" id="totalMarks">
+</div>
+
+<div>
+<label>Obtained Marks</label>
+<input type="number" id="obtainedMarks">
+</div>
+
+<div>
+<label>Test Date</label>
+<input type="date" id="testDate">
+</div>
+
+<div>
+<label>Remarks</label>
+<input id="resultRemarks">
+</div>
+
+</div>
+
+<button class="btn green" onclick="saveResult()">Save Result</button>
+<button class="btn gray" onclick="closeModal('resultModal')">Cancel</button>
+
+</div>
+</div>
+
+<script>
+
+/* =========================
+   SUPABASE
+========================= */
+
+const SUPABASE_URL="https://xpgallgzqeblnksuozba.supabase.co";
+
+const SUPABASE_KEY="sb_publishable_PJ1F2ErK4h1Waw49RnIUcw_iAbTQj0L";
+
+/* =========================
+   TABLE NAMES
+========================= */
+
+const TABLES={
+ students:"students",
+ results:"results",
+ fees:"fees",
+ attendance:"attendance"
+};
+
+/* =========================
+   CLASSES
+========================= */
+
+const CLASSES=[
+"ECE","Nursery","Prep","1st","2nd","3rd","4th","5th",
+"6th","7th","8th","9th","10th","1st Year","2nd Year"
+];
+
+const MONTHS=[
+"January","February","March","April","May","June",
+"July","August","September","October","November","December"
+];
+
+/* =========================
+   DATABASE
+========================= */
+
+let db={
+ students:[],
+ fees:[],
+ attendance:[],
+ results:[],
+ settings:{
+  academyName:"Bismillah Educational Academy",
+  campus:"Fazaia State Jahanian"
+ },
+ adminPassword:"12345"
+};
+
+/* =========================
+   SUPABASE API
+========================= */
+
+async function supa(path,options={}){
+
+ const headers={
+  "apikey":SUPABASE_KEY,
+  "Authorization":"Bearer "+SUPABASE_KEY,
+  "Content-Type":"application/json",
+  ...(options.headers||{})
+ };
+
+ const response=await fetch(
+  SUPABASE_URL+"/rest/v1/"+path,
+  {...options,headers}
+ );
+
+ if(!response.ok){
+  const text=await response.text();
+  throw new Error(text||("HTTP "+response.status));
+ }
+
+ if(response.status===204)return null;
+
+ const text=await response.text();
+
+ return text?JSON.parse(text):null;
+}
+
+async function getTable(table){
+ return await supa(table+"?select=*");
+}
+
+async function insertTable(table,row){
+
+ return await supa(table,{
+  method:"POST",
+  headers:{
+   "Prefer":"return=representation"
+  },
+  body:JSON.stringify(row)
+ });
+}
+
+async function updateTable(table,id,row){
+
+ return await supa(
+  table+"?id=eq."+encodeURIComponent(id),
+  {
+   method:"PATCH",
+   headers:{
+    "Prefer":"return=representation"
+   },
+   body:JSON.stringify(row)
+  }
+ );
+}
+
+async function deleteTable(table,id){
+
+ return await supa(
+  table+"?id=eq."+encodeURIComponent(id),
+  {
+   method:"DELETE"
+  }
+ );
+}
+
+/* =========================
+   LOCAL STORAGE
+========================= */
+
+function saveLocal(){
+
+ localStorage.setItem(
+  "bea_local_backup",
+  JSON.stringify(db)
+ );
+}
+
+function loadLocal(){
+
+ try{
+
+  const x=localStorage.getItem("bea_local_backup");
+
+  if(x){
+
+   const data=JSON.parse(x);
+
+   db={
+    ...db,
+    ...data,
+    settings:{
+     ...db.settings,
+     ...(data.settings||{})
+    }
+   };
+  }
+
+ }catch(e){
+  console.log(e);
+ }
+}
+
+/* =========================
+   CLOUD LOAD
+========================= */
+
+async function loadCloud(){
+
+ try{
+
+  const [
+   students,
+   fees,
+   attendance,
+   results
+  ]=await Promise.all([
+
+   getTable(TABLES.students),
+   getTable(TABLES.fees),
+   getTable(TABLES.attendance),
+   getTable(TABLES.results)
+
+  ]);
+
+  db.students=students||[];
+  db.fees=fees||[];
+  db.attendance=attendance||[];
+  db.results=results||[];
+
+  saveLocal();
+
+  renderAll();
+
+ }catch(error){
+
+  console.error(error);
+
+  loadLocal();
+
+  renderAll();
+
+  alert(
+   "Supabase data load failed.\n\n"+
+   error.message
+  );
+ }
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+function login(){
+
+ const p=document.getElementById("loginPassword").value;
+
+ if(p===db.adminPassword){
+
+  document.getElementById("loginScreen").style.display="none";
+
+  document.getElementById("app").style.display="block";
+
+  initialize();
+
+ }else{
+
+  alert("Wrong password!");
+
+ }
+}
+
+function logout(){
+ location.reload();
+}
+
+/* =========================
+   INITIALIZE
+========================= */
+
+function initialize(){
+
+ fillClasses();
+
+ fillMonths();
+
+ updateSettingsScreen();
+
+ renderAll();
+
+ loadCloud();
+
+}
+
+/* =========================
+   CLASSES
+========================= */
+
+function fillClasses(){
+
+ const ids=[
+  "className",
+  "studentClassFilter",
+  "attendanceClassFilter",
+  "resultClassFilter"
+ ];
+
+ ids.forEach(id=>{
+
+  const el=document.getElementById(id);
+
+  if(!el)return;
+
+  el.innerHTML="";
+
+  if(id!=="className"){
+
+   el.innerHTML=
+   '<option value="">All Classes</option>';
+
+  }
+
+  CLASSES.forEach(c=>{
+
+   const o=document.createElement("option");
+
+   o.value=c;
+   o.textContent=c;
+
+   el.appendChild(o);
+
+  });
+
+ });
+}
+
+/* =========================
+   MONTHS
+========================= */
+
+function fillMonths(){
+
+ const feeMonth=document.getElementById("feeMonth");
+
+ feeMonth.innerHTML="";
+
+ MONTHS.forEach((m,i)=>{
+
+  const o=document.createElement("option");
+
+  o.value=i+1;
+  o.textContent=m;
+
+  feeMonth.appendChild(o);
+
+ });
+
+ const filter=document.getElementById("feeMonthFilter");
+
+ filter.innerHTML=
+ '<option value="">All Months</option>';
+
+ MONTHS.forEach((m,i)=>{
+
+  const o=document.createElement("option");
+
+  o.value=i+1;
+  o.textContent=m;
+
+  filter.appendChild(o);
+
+ });
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showPage(id,btn){
+
+ document.querySelectorAll(".page")
+ .forEach(x=>x.classList.remove("active"));
+
+ document.getElementById(id)
+ .classList.add("active");
+
+ document.querySelectorAll(".sidebar button")
+ .forEach(x=>x.classList.remove("active"));
+
+ if(btn)btn.classList.add("active");
+
+ renderAll();
+}
+
+/* =========================
+   MODALS
+========================= */
+
+function openModal(id){
+
+ document.getElementById(id)
+ .classList.add("show");
+
+}
+
+function closeModal(id){
+
+ document.getElementById(id)
+ .classList.remove("show");
+
+}
+
+/* =========================
+   STUDENT MODAL
+========================= */
+
+function openStudentModal(id=null){
+
+ document.getElementById("studentEditId").value=id||"";
+
+ if(id){
+
+  const s=db.students.find(x=>x.id===id);
+
+  if(!s)return;
+
+  document.getElementById("studentModalTitle")
+  .textContent="Edit Student";
+
+  document.getElementById("studentName").value=
+  s.student_name||"";
+
+  document.getElementById("fatherName").value=
+  s.father_name||"";
+
+  document.getElementById("rollNo").value=
+  s.roll_no||"";
+
+  document.getElementById("className").value=
+  s.class_name||"";
+
+  document.getElementById("mobileNo").value=
+  s.mobile_no||"";
+
+  document.getElementById("admissionDate").value=
+  s.admission_date||"";
+
+  document.getElementById("monthlyFee").value=
+  s.monthly_fee||0;
+
+  document.getElementById("studentStatus").value=
+  s.status||"Active";
+
+ }else{
+
+  document.getElementById("studentModalTitle")
+  .textContent="Add Student";
+
+  [
+   "studentName",
+   "fatherName",
+   "rollNo",
+   "mobileNo",
+   "monthlyFee"
+  ].forEach(x=>{
+   document.getElementById(x).value="";
+  });
+
+  document.getElementById("admissionDate").value=
+  new Date().toISOString().slice(0,10);
+
+  document.getElementById("studentStatus").value="Active";
+
+  document.getElementById("className").selectedIndex=0;
+
+ }
+
+ openModal("studentModal");
+}
+
+/* =========================
+   SAVE STUDENT
+========================= */
+
+async function saveStudent(){
+
+ const name=
+ document.getElementById("studentName")
+ .value.trim();
+
+ const father=
+ document.getElementById("fatherName")
+ .value.trim();
+
+ const roll=
+ document.getElementById("rollNo")
+ .value.trim();
+
+ const cls=
+ document.getElementById("className")
+ .value;
+
+ const mobile=
+ document.getElementById("mobileNo")
+ .value.trim();
+
+ const admission=
+ document.getElementById("admissionDate")
+ .value;
+
+ const fee=
+ Number(
+  document.getElementById("monthlyFee")
+  .value||0
+ );
+
+ const status=
+ document.getElementById("studentStatus")
+ .value;
+
+ const editId=
+ document.getElementById("studentEditId")
+ .value;
+
+ if(!name||!father||!cls){
+
+  alert(
+   "Student Name, Father Name and Class are required."
+  );
+
+  return;
+ }
+
+ if(roll){
+
+  const duplicate=db.students.find(s=>
+   s.id!==editId &&
+   s.class_name===cls &&
+   s.roll_no===roll
+  );
+
+  if(duplicate){
+
+   alert(
+    "This Roll No already exists in this class."
+   );
+
+   return;
+  }
+ }
+
+ const now=new Date().toISOString();
+
+ try{
+
+  if(editId){
+
+   const old=db.students.find(
+    s=>s.id===editId
+   );
+
+   if(!old)return;
+
+   const row={
+
+    student_name:name,
+    father_name:father,
+    roll_no:roll,
+    class_name:cls,
+    mobile_no:mobile,
+
+    /* CORRECT SUPABASE COLUMN */
+    admission_date:admission,
+
+    /* CORRECT SUPABASE COLUMN */
+    monthly_fee:fee,
+
+    status:status,
+    updated_at:now
+
+   };
+
+   await updateTable(
+    TABLES.students,
+    editId,
+    row
+   );
+
+   Object.assign(old,row);
+
+  }else{
+
+   const id=crypto.randomUUID();
+
+   const row={
+
+    id:id,
+
+    student_name:name,
+    father_name:father,
+    roll_no:roll,
+    class_name:cls,
+    mobile_no:mobile,
+
+    /* CORRECT COLUMN */
+    admission_date:admission,
+
+    /* CORRECT COLUMN */
+    monthly_fee:fee,
+
+    status:status,
+
+    created_at:now,
+    updated_at:now
+
+   };
+
+   await insertTable(
+    TABLES.students,
+    row
+   );
+
+   db.students.push(row);
+  }
+
+  saveLocal();
+
+  closeModal("studentModal");
+
+  renderAll();
+
+  alert("Student saved successfully.");
+
+ }catch(e){
+
+  console.error(e);
+
+  alert(
+   "Student save failed:\n\n"+
+   e.message
+  );
+ }
+}
+
+/* =========================
+   DELETE STUDENT
+========================= */
+
+async function deleteStudent(id){
+
+ const s=db.students.find(x=>x.id===id);
+
+ if(!s)return;
+
+ if(!confirm(
+  "Delete "+s.student_name+"?\n\n"+
+  "Student and related records will be deleted."
+ ))return;
+
+ try{
+
+  const relatedFees=
+  db.fees.filter(x=>x.student_id===id);
+
+  const relatedAttendance=
+  db.attendance.filter(x=>x.student_id===id);
+
+  const relatedResults=
+  db.results.filter(x=>x.student_id===id);
+
+  for(const x of relatedFees)
+   await deleteTable(
+    TABLES.fees,
+    x.id
+   );
+
+  for(const x of relatedAttendance)
+   await deleteTable(
+    TABLES.attendance,
+    x.id
+   );
+
+  for(const x of relatedResults)
+   await deleteTable(
+    TABLES.results,
+    x.id
+   );
+
+  await deleteTable(
+   TABLES.students,
+   id
+  );
+
+  db.students=
+  db.students.filter(x=>x.id!==id);
+
+  db.fees=
+  db.fees.filter(x=>x.student_id!==id);
+
+  db.attendance=
+  db.attendance.filter(x=>x.student_id!==id);
+
+  db.results=
+  db.results.filter(x=>x.student_id!==id);
+
+  saveLocal();
+
+  renderAll();
+
+  alert("Student deleted successfully.");
+
+ }catch(e){
+
+  alert(
+   "Delete failed:\n\n"+
+   e.message
+  );
+
+  await loadCloud();
+ }
+}
+
+/* =========================
+   TOGGLE STATUS
+========================= */
+
+async function toggleStudent(id){
+
+ const s=db.students.find(x=>x.id===id);
+
+ if(!s)return;
+
+ const status=
+ s.status==="Active"
+ ?"Inactive"
+ :"Active";
+
+ try{
+
+  await updateTable(
+   TABLES.students,
+   id,
+   {
+    status:status,
+    updated_at:new Date().toISOString()
+   }
+  );
+
+  s.status=status;
+
+  saveLocal();
+
+  renderAll();
+
+ }catch(e){
+
+  alert(
+   "Status update failed:\n\n"+
+   e.message
+  );
+ }
+}
+
+/* =========================
+   RENDER STUDENTS
+========================= */
+
+function renderStudents(){
+
+ const search=
+ document.getElementById("studentSearch")
+ .value.toLowerCase();
+
+ const cls=
+ document.getElementById("studentClassFilter")
+ .value;
+
+ const status=
+ document.getElementById("studentStatusFilter")
+ .value;
+
+ const list=db.students.filter(s=>{
+
+  const text=(
+   (s.student_name||"")+" "+
+   (s.father_name||"")+" "+
+   (s.roll_no||"")+" "+
+   (s.mobile_no||"")
+  ).toLowerCase();
+
+  return(
+   (!search||text.includes(search))&&
+   (!cls||s.class_name===cls)&&
+   (!status||s.status===status)
+  );
+ });
+
+ const tbody=
+ document.getElementById("studentsTable");
+
+ if(!list.length){
+
+  tbody.innerHTML=
+  '<tr><td colspan="9" class="empty">No students found</td></tr>';
+
+  return;
+ }
+
+ tbody.innerHTML=list.map(s=>`
+
+<tr>
+
+<td>${esc(s.student_name)}</td>
+
+<td>${esc(s.father_name)}</td>
+
+<td>${esc(s.roll_no||"-")}</td>
+
+<td>${esc(s.class_name)}</td>
+
+<td>${esc(s.mobile_no||"-")}</td>
+
+<td>${esc(s.admission_date||"-")}</td>
+
+<td>${money(s.monthly_fee)}</td>
+
+<td>
+<span class="badge ${
+ s.status==="Active"
+ ?"active"
+ :"inactive"
+}">
+${esc(s.status)}
+</span>
+</td>
+
+<td class="no-print">
+
+<button class="btn small"
+onclick="openStudentModal('${s.id}')">
+Edit
+</button>
+
+<button class="btn small orange"
+onclick="toggleStudent('${s.id}')">
+${s.status==="Active"?"Inactive":"Activate"}
+</button>
+
+<button class="btn small gray"
+onclick="studentProfile('${s.id}')">
+Profile
+</button>
+
+<button class="btn small red"
+onclick="deleteStudent('${s.id}')">
+Delete
+</button>
+
+</td>
+
+</tr>
+
+`).join("");
+}
+
+/* =========================
+   FEES
+========================= */
+
+function openFeeModal(){
+
+ const select=
+ document.getElementById("feeStudent");
+
+ select.innerHTML="";
+
+ db.students
+ .filter(s=>s.status==="Active")
+ .forEach(s=>{
+
+  const o=document.createElement("option");
+
+  o.value=s.id;
+
+  o.textContent=
+  s.student_name+
+  " - "+
+  s.class_name;
+
+  select.appendChild(o);
+
+ });
+
+ document.getElementById("feeYear").value=
+ new Date().getFullYear();
+
+ document.getElementById("feeMonth").value=
+ new Date().getMonth()+1;
+
+ document.getElementById("paymentDate").value=
+ new Date().toISOString().slice(0,10);
+
+ document.getElementById("paidAmount").value="";
+ document.getElementById("feeNotes").value="";
+
+ updateFeeAmount();
+
+ openModal("feeModal");
+}
+
+document
+.getElementById("feeStudent")
+.addEventListener(
+ "change",
+ updateFeeAmount
+);
+
+function updateFeeAmount(){
+
+ const id=
+ document.getElementById("feeStudent")
+ .value;
+
+ const s=
+ db.students.find(x=>x.id===id);
+
+ if(s){
+
+  document.getElementById("feeAmount")
+  .value=s.monthly_fee||0;
+
+ }
+}
+
+/* =========================
+   SAVE FEE
+========================= */
+
+async function saveFee(){
+
+ const studentId=
+ document.getElementById("feeStudent").value;
+
+ const month=
+ Number(
+  document.getElementById("feeMonth").value
+ );
+
+ const year=
+ Number(
+  document.getElementById("feeYear").value
+ );
+
+ const amount=
+ Number(
+  document.getElementById("feeAmount").value||0
+ );
+
+ const paid=
+ Number(
+  document.getElementById("paidAmount").value||0
+ );
+
+ const date=
+ document.getElementById("paymentDate").value;
+
+ let status=
+ document.getElementById("feeStatus").value;
+
+ const notes=
+ document.getElementById("feeNotes")
+ .value.trim();
+
+ if(!studentId){
+
+  alert("Select student.");
+
+  return;
+ }
+
+ if(paid>amount){
+
+  alert(
+   "Paid amount cannot be greater than fee amount."
+  );
+
+  return;
+ }
+
+ if(paid===0)status="Unpaid";
+ else if(paid<amount)status="Partial";
+ else status="Paid";
+
+ const existing=db.fees.find(x=>
+  x.student_id===studentId&&
+  Number(x.fee_month)===month&&
+  Number(x.fee_year)===year
+ );
+
+ const now=new Date().toISOString();
+
+ try{
+
+  if(existing){
+
+   if(!confirm(
+    "This month's fee already exists. Update it?"
+   ))return;
+
+   const row={
+
+    amount:amount,
+    paid_amount:paid,
+    due_amount:Math.max(amount-paid,0),
+    payment_date:date,
+    status:status,
+    notes:notes,
+    updated_at:now
+
+   };
+
+   await updateTable(
+    TABLES.fees,
+    existing.id,
+    row
+   );
+
+   Object.assign(existing,row);
+
+  }else{
+
+   const row={
+
+    id:crypto.randomUUID(),
+
+    student_id:studentId,
+
+    fee_month:month,
+    fee_year:year,
+
+    amount:amount,
+    paid_amount:paid,
+    due_amount:Math.max(amount-paid,0),
+
+    payment_date:date,
+    status:status,
+    notes:notes,
+
+    created_at:now,
+    updated_at:now
+
+   };
+
+   await insertTable(
+    TABLES.fees,
+    row
+   );
+
+   db.fees.push(row);
+  }
+
+  saveLocal();
+
+  closeModal("feeModal");
+
+  renderAll();
+
+  alert("Fee saved successfully.");
+
+ }catch(e){
+
+  alert(
+   "Fee save failed:\n\n"+
+   e.message
+  );
+ }
+}
+
+/* =========================
+   DELETE FEE
+========================= */
+
+async function deleteFee(id){
+
+ if(!confirm(
+  "Delete this fee record?"
+ ))return;
+
+ try{
+
+  await deleteTable(
+   TABLES.fees,
+   id
+  );
+
+  db.fees=
+  db.fees.filter(x=>x.id!==id);
+
+  saveLocal();
+
+  renderAll();
+
+ }catch(e){
+
+  alert(
+   "Fee delete failed:\n\n"+
+   e.message
+  );
+ }
+}
+
+/* =========================
+   RENDER FEES
+========================= */
+
+function renderFees(){
+
+ const student=
+ document.getElementById("feeStudentFilter").value;
+
+ const month=
+ document.getElementById("feeMonthFilter").value;
+
+ const year=
+ document.getElementById("feeYearFilter").value;
+
+ const list=db.fees.filter(f=>
+  (!student||f.student_id===student)&&
+  (!month||Number(f.fee_month)===Number(month))&&
+  (!year||Number(f.fee_year)===Number(year))
+ );
+
+ const tbody=
+ document.getElementById("feesTable");
+
+ if(!list.length){
+
+  tbody.innerHTML=
+  '<tr><td colspan="9" class="empty">No fee records found</td></tr>';
+
+  return;
+ }
+
+ tbody.innerHTML=list.map(f=>{
+
+  const s=
+  db.students.find(
+   x=>x.id===f.student_id
+  );
+
+  return `
+
+<tr>
+
+<td>${esc(s?.student_name||"Unknown")}</td>
+
+<td>
+${MONTHS[(Number(f.fee_month)||1)-1]}
+</td>
+
+<td>${f.fee_year}</td>
+
+<td>${money(f.amount)}</td>
+
+<td>${money(f.paid_amount)}</td>
+
+<td>${money(f.due_amount)}</td>
+
+<td>${esc(f.payment_date||"-")}</td>
+
+<td>
+<span class="badge ${
+ f.status==="Paid"
+ ?"paid"
+ :f.status==="Partial"
+ ?"partial"
+ :"unpaid"
+}">
+${esc(f.status)}
+</span>
+</td>
+
+<td class="no-print">
+
+<button class="btn small green"
+onclick="printFee('${f.id}')">
+Receipt
+</button>
+
+<button class="btn small red"
+onclick="deleteFee('${f.id}')">
+Delete
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+ }).join("");
+}
+
+/* =========================
+   ATTENDANCE
+========================= */
+
+function openAttendanceModal(){
+
+ const select=
+ document.getElementById("attendanceStudent");
+
+ select.innerHTML="";
+
+ db.students
+ .filter(s=>s.status==="Active")
+ .forEach(s=>{
+
+  const o=document.createElement("option");
+
+  o.value=s.id;
+
+  o.textContent=
+  s.student_name+
+  " - "+
+  s.class_name;
+
+  select.appendChild(o);
+
+ });
+
+ document.getElementById("attendanceDate").value=
+ new Date().toISOString().slice(0,10);
+
+ document.getElementById("attendanceRemarks").value="";
+
+ openModal("attendanceModal");
+}
+
+/* =========================
+   SAVE ATTENDANCE
+========================= */
+
+async function saveAttendance(){
+
+ const studentId=
+ document.getElementById("attendanceStudent")
+ .value;
+
+ const date=
+ document.getElementById("attendanceDate")
+ .value;
+
+ const status=
+ document.getElementById("attendanceStatus")
+ .value;
+
+ const remarks=
+ document.getElementById("attendanceRemarks")
+ .value.trim();
+
+ if(!studentId||!date){
+
+  alert(
+   "Student and date are required."
+  );
+
+  return;
+ }
+
+ const existing=db.attendance.find(x=>
+  x.student_id===studentId&&
+  x.attendance_date===date
+ );
+
+ try{
+
+  if(existing){
+
+   const row={
+    status:status,
+    remarks:remarks,
+    updated_at:new Date().toISOString()
+   };
+
+   await updateTable(
+    TABLES.attendance,
+    existing.id,
+    row
+   );
+
+   Object.assign(existing,row);
+
+  }else{
+
+   const now=
+   new Date().toISOString();
+
+   const row={
+
+    id:crypto.randomUUID(),
+
+    student_id:studentId,
+
+    attendance_date:date,
+
+    status:status,
+    remarks:remarks,
+
+    created_at:now,
+    updated_at:now
+
+   };
+
+   await insertTable(
+    TABLES.attendance,
+    row
+   );
+
+   db.attendance.push(row);
+  }
+
+  saveLocal();
+
+  closeModal("attendanceModal");
+
+  renderAll();
+
+  alert(
+   "Attendance saved successfully."
+  );
+
+ }catch(e){
+
+  alert(
+   "Attendance save failed:\n\n"+
+   e.message
+  );
+ }
+}
+
+/* =========================
+   RENDER ATTENDANCE
+========================= */
+
+function renderAttendance(){
+
+ const date=
+ document.getElementById("attendanceDateFilter")
+ .value;
+
+ const cls=
+ document.getElementById("attendanceClassFilter")
+ .value;
+
+ const list=db.attendance.filter(a=>{
+
+  const s=
+  db.students.find(
+   x=>x.id===a.student_id
+  );
+
+  return(
+   (!date||a.attendance_date===date)&&
+   (!cls||s?.class_name===cls)
+  );
+
+ });
+
+ const tbody=
+ document.getElementById("attendanceTable");
+
+ if(!list.length){
+
+  tbody.innerHTML=
+  '<tr><td colspan="5" class="empty">No attendance records found</td></tr>';
+
+  return;
+ }
+
+ tbody.innerHTML=list.map(a=>{
+
+  const s=
+  db.students.find(
+   x=>x.id===a.student_id
+  );
+
+  return `
+
+<tr>
+
+<td>${a.attendance_date}</td>
+
+<td>${esc(s?.student_name||"")}</td>
+
+<td>${esc(s?.class_name||"")}</td>
+
+<td>
+<span class="badge ${a.status.toLowerCase()}">
+${esc(a.status)}
+</span>
+</td>
+
+<td>${esc(a.remarks||"-")}</td>
+
+</tr>
+
+`;
+
+ }).join("");
+}
+
+/* =========================
+   RESULTS
+========================= */
+
+function openResultModal(){
+
+ const select=
+ document.getElementById("resultStudent");
+
+ select.innerHTML="";
+
+ db.students.forEach(s=>{
+
+  const o=document.createElement("option");
+
+  o.value=s.id;
+
+  o.textContent=
+  s.student_name+
+  " - "+
+  s.class_name;
+
+  select.appendChild(o);
+
+ });
+
+ document.getElementById("testDate").value=
+ new Date().toISOString().slice(0,10);
+
+ openModal("resultModal");
+}
+
+/* =========================
+   SAVE RESULT
+========================= */
+
+async function saveResult(){
+
+ const studentId=
+ document.getElementById("resultStudent").value;
+
+ const test=
+ document.getElementById("testName")
+ .value.trim();
+
+ const subject=
+ document.getElementById("subject")
+ .value.trim();
+
+ const total=
+ Number(
+  document.getElementById("totalMarks")
+  .value||0
+ );
+
+ const obtained=
+ Number(
+  document.getElementById("obtainedMarks")
+  .value||0
+ );
+
+ const date=
+ document.getElementById("testDate").value;
+
+ const remarks=
+ document.getElementById("resultRemarks")
+ .value.trim();
+
+ if(!studentId||!test||!subject){
+
+  alert(
+   "Student, Test Name and Subject are required."
+  );
+
+  return;
+ }
+
+ if(obtained>total){
+
+  alert(
+   "Obtained marks cannot be greater than total marks."
+  );
+
+  return;
+ }
+
+ const now=
+ new Date().toISOString();
+
+ const row={
+
+  id:crypto.randomUUID(),
+
+  student_id:studentId,
+
+  test_name:test,
+  subject:subject,
+
+  total_marks:total,
+  obtained_marks:obtained,
+
+  test_date:date,
+
+  remarks:remarks,
+
+  created_at:now,
+  updated_at:now
+
+ };
+
+ try{
+
+  await insertTable(
+   TABLES.results,
+   row
+  );
+
+  db.results.push(row);
+
+  saveLocal();
+
+  closeModal("resultModal");
+
+  [
+   "testName",
+   "subject",
+   "totalMarks",
+   "obtainedMarks",
+   "resultRemarks"
+  ].forEach(x=>{
+   document.getElementById(x).value="";
+  });
+
+  renderAll();
+
+  alert("Result saved successfully.");
+
+ }catch(e){
+
+  alert(
+   "Result save failed:\n\n"+
+   e.message
+  );
+ }
+}
+
+/* =========================
+   GRADE
+========================= */
+
+function getGrade(p){
+
+ if(p>=80)return"A+";
+ if(p>=70)return"A";
+ if(p>=60)return"B";
+ if(p>=50)return"C";
+ if(p>=40)return"D";
+
+ return"F";
+}
+
+/* =========================
+   RENDER RESULTS
+========================= */
+
+function renderResults(){
+
+ const student=
+ document.getElementById("resultStudentFilter")
+ .value;
+
+ const cls=
+ document.getElementById("resultClassFilter")
+ .value;
+
+ const list=db.results.filter(r=>{
+
+  const s=
+  db.students.find(
+   x=>x.id===r.student_id
+  );
+
+  return(
+   (!student||r.student_id===student)&&
+   (!cls||s?.class_name===cls)
+  );
+
+ });
+
+ const tbody=
+ document.getElementById("resultsTable");
+
+ if(!list.length){
+
+  tbody.innerHTML=
+  '<tr><td colspan="9" class="empty">No results found</td></tr>';
+
+  return;
+ }
+
+ tbody.innerHTML=list.map(r=>{
+
+  const s=
+  db.students.find(
+   x=>x.id===r.student_id
+  );
+
+  const p=
+  r.total_marks
+  ?(r.obtained_marks/r.total_marks*100)
+  :0;
+
+  return `
+
+<tr>
+
+<td>${esc(s?.student_name||"")}</td>
+
+<td>${esc(s?.class_name||"")}</td>
+
+<td>${esc(r.test_name)}</td>
+
+<td>${esc(r.subject)}</td>
+
+<td>${r.total_marks}</td>
+
+<td>${r.obtained_marks}</td>
+
+<td>${p.toFixed(1)}%</td>
+
+<td>${getGrade(p)}</td>
+
+<td>${r.test_date||"-"}</td>
+
+</tr>
+
+`;
+
+ }).join("");
+}
+
+/* =========================
+   FILTERS
+========================= */
+
+function fillDynamicFilters(){
+
+ const ids=[
+  "feeStudentFilter",
+  "resultStudentFilter"
+ ];
+
+ ids.forEach(id=>{
+
+  const el=
+  document.getElementById(id);
+
+  if(!el)return;
+
+  const current=el.value;
+
+  el.innerHTML=
+  '<option value="">All Students</option>';
+
+  db.students.forEach(s=>{
+
+   const o=
+   document.createElement("option");
+
+   o.value=s.id;
+
+   o.textContent=
+   s.student_name+
+   " - "+
+   s.class_name;
+
+   el.appendChild(o);
+
+  });
+
+  el.value=current;
+
+ });
+
+ const yearEl=
+ document.getElementById("feeYearFilter");
+
+ const current=yearEl.value;
+
+ const years=[
+  ...new Set(
+   db.fees.map(
+    x=>Number(x.fee_year)
+   )
+  )
+ ]
+ .filter(Boolean)
+ .sort((a,b)=>b-a);
+
+ yearEl.innerHTML=
+ '<option value="">All Years</option>';
+
+ years.forEach(y=>{
+
+  const o=
+  document.createElement("option");
+
+  o.value=y;
+  o.textContent=y;
+
+  yearEl.appendChild(o);
+
+ });
+
+ yearEl.value=current;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function renderDashboard(){
+
+ const total=db.students.length;
+
+ const active=
+ db.students.filter(
+  s=>s.status==="Active"
+ ).length;
+
+ const paid=
+ db.fees.reduce(
+  (a,x)=>
+  a+Number(x.paid_amount||0),
+  0
+ );
+
+ document.getElementById("totalStudents")
+ .textContent=total;
+
+ document.getElementById("activeStudents")
+ .textContent=active;
+
+ document.getElementById("inactiveStudents")
+ .textContent=
+ total-active;
+
+ document.getElementById("totalPaid")
+ .textContent=money(paid);
+
+ const recent=
+ [...db.students]
+ .reverse()
+ .slice(0,10);
+
+ const tbody=
+ document.getElementById("recentStudents");
+
+ if(!recent.length){
+
+  tbody.innerHTML=
+  '<tr><td colspan="4" class="empty">No students yet</td></tr>';
+
+  return;
+ }
+
+ tbody.innerHTML=
+ recent.map(s=>`
+
+<tr>
+
+<td>${esc(s.student_name)}</td>
+
+<td>${esc(s.father_name)}</td>
+
+<td>${esc(s.class_name)}</td>
+
+<td>
+<span class="badge ${
+ s.status==="Active"
+ ?"active"
+ :"inactive"
+}">
+${esc(s.status)}
+</span>
+</td>
+
+</tr>
+
+`).join("");
+}
+
+/* =========================
+   REPORTS
+========================= */
+
+function renderReports(){
+
+ const total=
+ db.fees.reduce(
+  (a,x)=>a+Number(x.amount||0),
+  0
+ );
+
+ const paid=
+ db.fees.reduce(
+  (a,x)=>a+Number(x.paid_amount||0),
+  0
+ );
+
+ const due=
+ db.fees.reduce(
+  (a,x)=>a+Number(x.due_amount||0),
+  0
+ );
+
+ document.getElementById("reportTotalFee")
+ .textContent=money(total);
+
+ document.getElementById("reportPaid")
+ .textContent=money(paid);
+
+ document.getElementById("reportDue")
+ .textContent=money(due);
+
+ document.getElementById("reportResults")
+ .textContent=db.results.length;
+}
+
+/* =========================
+   RENDER ALL
+========================= */
+
+function renderAll(){
+
+ renderDashboard();
+ renderStudents();
+ renderFees();
+ renderAttendance();
+ renderResults();
+ renderReports();
+ fillDynamicFilters();
+
+}
+
+/* =========================
+   STUDENT PROFILE
+========================= */
+
+function studentProfile(id){
+
+ const s=
+ db.students.find(
+  x=>x.id===id
+ );
+
+ if(!s)return;
+
+ const fees=
+ db.fees.filter(
+  x=>x.student_id===id
+ );
+
+ const attendance=
+ db.attendance.filter(
+  x=>x.student_id===id
+ );
+
+ const results=
+ db.results.filter(
+  x=>x.student_id===id
+ );
+
+ const paid=
+ fees.reduce(
+  (a,x)=>a+Number(x.paid_amount||0),
+  0
+ );
+
+ const due=
+ fees.reduce(
+  (a,x)=>a+Number(x.due_amount||0),
+  0
+ );
+
+ const present=
+ attendance.filter(
+  x=>x.status==="Present"
+ ).length;
+
+ const absent=
+ attendance.filter(
+  x=>x.status==="Absent"
+ ).length;
+
+ const html=`
+
+<h2>${esc(s.student_name)}</h2>
+
+<hr>
+
+<p>
+<b>Father Name:</b>
+${esc(s.father_name)}
+</p>
+
+<p>
+<b>Roll No:</b>
+${esc(s.roll_no||"-")}
+</p>
+
+<p>
+<b>Class:</b>
+${esc(s.class_name)}
+</p>
+
+<p>
+<b>Mobile:</b>
+${esc(s.mobile_no||"-")}
+</p>
+
+<p>
+<b>Admission Date:</b>
+${esc(s.admission_date||"-")}
+</p>
+
+<p>
+<b>Monthly Fee:</b>
+${money(s.monthly_fee)}
+</p>
+
+<p>
+<b>Status:</b>
+${esc(s.status)}
+</p>
+
+<hr>
+
+<p>
+<b>Total Paid:</b>
+${money(paid)}
+</p>
+
+<p>
+<b>Total Due:</b>
+${money(due)}
+</p>
+
+<p>
+<b>Present:</b>
+${present}
+</p>
+
+<p>
+<b>Absent:</b>
+${absent}
+</p>
+
+<p>
+<b>Total Results:</b>
+${results.length}
+</p>
+
+<br>
+
+<h3>Fee History</h3>
+
+<table>
+
+<tr>
+<th>Month</th>
+<th>Year</th>
+<th>Fee</th>
+<th>Paid</th>
+<th>Due</th>
+</tr>
+
+${
+ fees.map(f=>`
+
+<tr>
+
+<td>
+${MONTHS[(f.fee_month||1)-1]}
+</td>
+
+<td>${f.fee_year}</td>
+
+<td>${money(f.amount)}</td>
+
+<td>${money(f.paid_amount)}</td>
+
+<td>${money(f.due_amount)}</td>
+
+</tr>
+
+`).join("")
+||
+"<tr><td colspan='5'>No fee history</td></tr>"
+}
+
+</table>
+`;
+
+ showCustomModal(
+  "Student Profile",
+  html
+ );
+}
+
+/* =========================
+   PRINT
+========================= */
+
+function printPage(id){
+
+ document.querySelectorAll(".page")
+ .forEach(p=>p.classList.remove("printing"));
+
+ const page=
+ document.getElementById(id);
+
+ page.classList.add("printing");
+
+ setTimeout(
+  ()=>window.print(),
+  100
+ );
+
+ setTimeout(
+  ()=>page.classList.remove("printing"),
+  1000
+ );
+}
+
+/* =========================
+   PRINT FEE
+========================= */
+
+function printFee(id){
+
+ const f=
+ db.fees.find(
+  x=>x.id===id
+ );
+
+ if(!f)return;
+
+ const s=
+ db.students.find(
+  x=>x.id===f.student_id
+ );
+
+ const html=`
+
+<div style="max-width:600px;margin:auto;font-family:Arial">
+
+<h1 style="text-align:center">
+${esc(db.settings.academyName)}
+</h1>
+
+<h3 style="text-align:center">
+${esc(db.settings.campus)}
+</h3>
+
+<hr>
+
+<h2 style="text-align:center">
+FEE RECEIPT
+</h2>
+
+<p>
+<b>Student:</b>
+${esc(s?.student_name||"")}
+</p>
+
+<p>
+<b>Father Name:</b>
+${esc(s?.father_name||"")}
+</p>
+
+<p>
+<b>Class:</b>
+${esc(s?.class_name||"")}
+</p>
+
+<p>
+<b>Roll No:</b>
+${esc(s?.roll_no||"-")}
+</p>
+
+<hr>
+
+<p>
+<b>Month:</b>
+${MONTHS[(f.fee_month||1)-1]}
+${f.fee_year}
+</p>
+
+<p>
+<b>Fee:</b>
+${money(f.amount)}
+</p>
+
+<p>
+<b>Paid:</b>
+${money(f.paid_amount)}
+</p>
+
+<p>
+<b>Due:</b>
+${money(f.due_amount)}
+</p>
+
+<p>
+<b>Payment Date:</b>
+${f.payment_date||"-"}
+</p>
+
+<p>
+<b>Status:</b>
+${f.status}
+</p>
+
+<hr>
+
+<p style="text-align:center">
+Thank You
+</p>
+
+</div>
+`;
+
+ printHTML(html);
+}
+
+/* =========================
+   PRINT HTML
+========================= */
+
+function printHTML(html){
+
+ const win=
+ window.open("","_blank");
+
+ if(!win){
+
+  alert(
+   "Please allow pop-ups."
+  );
+
+  return;
+ }
+
+ win.document.write(`
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Print</title>
+
+<style>
+
+body{
+font-family:Arial;
+padding:25px;
+color:#111
+}
+
+table{
+width:100%;
+border-collapse:collapse
+}
+
+th,td{
+border:1px solid #555;
+padding:7px
+}
+
+</style>
+
+</head>
+
+<body>
+
+${html}
+
+</body>
+
+</html>
+
+`);
+
+ win.document.close();
+
+ win.focus();
+
+ setTimeout(
+  ()=>win.print(),
+  300
+ );
+}
+
+/* =========================
+   BACKUP
+========================= */
+
+function downloadBackup(){
+
+ const data={
+
+  exported_at:
+  new Date().toISOString(),
+
+  students:db.students,
+  fees:db.fees,
+  attendance:db.attendance,
+  results:db.results,
+  settings:db.settings
+
+ };
+
+ const blob=
+ new Blob(
+  [JSON.stringify(data,null,2)],
+  {type:"application/json"}
+ );
+
+ const url=
+ URL.createObjectURL(blob);
+
+ const a=
+ document.createElement("a");
+
+ a.href=url;
+
+ a.download=
+ "Bismillah_Academy_Backup_"+
+ new Date().toISOString().slice(0,10)+
+ ".json";
+
+ a.click();
+
+ URL.revokeObjectURL(url);
+}
+
+/* =========================
+   RESTORE
+========================= */
+
+function restoreBackup(event){
+
+ const file=
+ event.target.files[0];
+
+ if(!file)return;
+
+ const reader=
+ new FileReader();
+
+ reader.onload=async()=>{
+
+  try{
+
+   const data=
+   JSON.parse(reader.result);
+
+   if(
+    !data.students||
+    !data.fees||
+    !data.attendance||
+    !data.results
+   ){
+
+    throw new Error(
+     "Invalid backup"
+    );
+   }
+
+   if(!confirm(
+    "Restore this backup?"
+   ))return;
+
+   db.students=
+   data.students||[];
+
+   db.fees=
+   data.fees||[];
+
+   db.attendance=
+   data.attendance||[];
+
+   db.results=
+   data.results||[];
+
+   saveLocal();
+
+   renderAll();
+
+   alert(
+    "Local backup restored."
+   );
+
+  }catch(e){
+
+   alert(
+    "Invalid backup file."
+   );
+  }
+ };
+
+ reader.readAsText(file);
+}
+
+/* =========================
+   CLEAR LOCAL
+========================= */
+
+function clearLocalData(){
+
+ if(!confirm(
+  "Clear local backup/cache only? Supabase data will NOT be deleted."
+ ))return;
+
+ localStorage.removeItem(
+  "bea_local_backup"
+ );
+
+ alert(
+  "Local cache cleared. Supabase data remains safe."
+ );
+}
+
+/* =========================
+   SETTINGS
+========================= */
+
+function updateSettingsScreen(){
+
+ document.getElementById(
+  "academyNameSetting"
+ ).value=
+ db.settings.academyName;
+
+ document.getElementById(
+  "campusSetting"
+ ).value=
+ db.settings.campus;
+
+ document.getElementById(
+  "headName"
+ ).textContent=
+ db.settings.academyName;
+
+ document.getElementById(
+  "headCampus"
+ ).textContent=
+ db.settings.campus;
+}
+
+function saveSettings(){
+
+ db.settings.academyName=
+ document.getElementById(
+  "academyNameSetting"
+ ).value.trim()
+ ||
+ "Bismillah Educational Academy";
+
+ db.settings.campus=
+ document.getElementById(
+  "campusSetting"
+ ).value.trim()
+ ||
+ "Fazaia State Jahanian";
+
+ saveLocal();
+
+ updateSettingsScreen();
+
+ alert("Settings saved.");
+}
+
+/* =========================
+   PASSWORD
+========================= */
+
+function changePassword(){
+
+ const p=
+ document.getElementById(
+  "newPassword"
+ ).value;
+
+ if(p.length<4){
+
+  alert(
+   "Password must be at least 4 characters."
+  );
+
+  return;
+ }
+
+ db.adminPassword=p;
+
+ saveLocal();
+
+ document.getElementById(
+  "newPassword"
+ ).value="";
+
+ alert(
+  "Password changed on this device."
+ );
+}
+
+/* =========================
+   UTILITIES
+========================= */
+
+function money(v){
+
+ return Number(v||0)
+ .toLocaleString();
+}
+
+function esc(v){
+
+ return String(v??"")
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;")
+ .replace(/'/g,"&#039;");
+}
+
+/* =========================
+   CUSTOM MODAL
+========================= */
+
+function showCustomModal(title,html){
+
+ const old=
+ document.getElementById(
+  "customModal"
+ );
+
+ if(old)old.remove();
+
+ const modal=
+ document.createElement("div");
+
+ modal.className=
+ "modal show";
+
+ modal.id=
+ "customModal";
+
+ modal.innerHTML=`
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<h2>${title}</h2>
+
+<button class="close"
+onclick="this.closest('.modal').remove()">
+✕
+</button>
+
+</div>
+
+${html}
+
+<br>
+
+<button class="btn gray"
+onclick="printHTML(this.parentElement.innerHTML)">
+🖨️ Print / PDF
+</button>
+
+</div>
+
+`;
+
+ document.body.appendChild(modal);
+}
+
+/* =========================
+   MODAL CLICK CLOSE
+========================= */
+
+document
+.querySelectorAll(".modal")
+.forEach(m=>{
+
+ m.addEventListener(
+  "click",
+  e=>{
+
+   if(e.target===m)
+   m.classList.remove("show");
+
+  }
+ );
+
+});
+
+/* =========================
+   START
+========================= */
+
+loadLocal();
+
+</script>
+
+</body>
+</html>
