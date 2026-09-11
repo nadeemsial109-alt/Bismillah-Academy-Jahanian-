@@ -109,7 +109,7 @@ header h1{
 }
 
 header small{
- opacity:.8
+ opacity:.9
 }
 
 .layout{
@@ -157,7 +157,7 @@ header small{
  display:block
 }
 
-/* CARDS */
+/* DASHBOARD CARDS */
 
 .cards{
  display:grid;
@@ -166,11 +166,12 @@ header small{
  margin:15px 0
 }
 
-.card,.panel{
+.card{
  background:white;
  border-radius:10px;
  padding:16px;
- box-shadow:0 2px 8px #0001
+ box-shadow:0 2px 8px #0001;
+ border-top:4px solid #356ae6
 }
 
 .card h3{
@@ -181,6 +182,41 @@ header small{
 
 .card strong{
  font-size:24px
+}
+
+.card.expected{border-top-color:#7547c7}
+.card.received{border-top-color:#159447}
+.card.remaining{border-top-color:#d93434}
+.card.pending{border-top-color:#e58a16}
+
+/* PANELS */
+
+.panel{
+ background:white;
+ border-radius:10px;
+ padding:16px;
+ box-shadow:0 2px 8px #0001;
+ margin-bottom:16px
+}
+
+.title{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:8px;
+ flex-wrap:wrap;
+ margin-bottom:13px
+}
+
+.toolbar{
+ display:flex;
+ gap:5px;
+ flex-wrap:wrap;
+ margin-bottom:10px
+}
+
+.toolbar>*{
+ max-width:220px
 }
 
 /* CLASS CARDS */
@@ -224,29 +260,7 @@ header small{
  margin-top:5px
 }
 
-.panel{
- margin-bottom:16px
-}
-
-.title{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:8px;
- flex-wrap:wrap;
- margin-bottom:13px
-}
-
-.toolbar{
- display:flex;
- gap:5px;
- flex-wrap:wrap;
- margin-bottom:10px
-}
-
-.toolbar>*{
- max-width:220px
-}
+/* TABLE */
 
 .table-wrap{
  width:100%;
@@ -276,6 +290,8 @@ th{
  padding:25px
 }
 
+/* BADGES */
+
 .badge{
  padding:4px 8px;
  border-radius:20px;
@@ -296,6 +312,8 @@ th{
  background:#fff0cf;
  color:#875600
 }
+
+/* FORMS */
 
 .form-grid{
  display:grid;
@@ -349,6 +367,11 @@ th{
  background:#eef4ff;
  color:#2458d7;
  margin-bottom:12px
+}
+
+.dashboard-icon{
+ font-size:23px;
+ margin-bottom:5px
 }
 
 .print-header{
@@ -407,6 +430,10 @@ th{
 
  .card{
   padding:12px
+ }
+
+ .card strong{
+  font-size:20px
  }
 
  .class-grid{
@@ -521,7 +548,7 @@ Bismillah Educational Academy
 </h1>
 
 <small id="headCampus">
-Fazaia State Jahanian
+Fazaia State Jahanian | 📞 0300-6884391
 </small>
 
 </div>
@@ -543,58 +570,39 @@ Logout
 
 <div class="sidebar">
 
-<button
- class="active"
- onclick="showPage('dashboard',this)"
->
+<button class="active" onclick="showPage('dashboard',this)">
 🏠 Dashboard
 </button>
 
-<button
- onclick="showPage('students',this)"
->
+<button onclick="showPage('students',this)">
 👨‍🎓 Students
 </button>
 
-<button
- onclick="showPage('classes',this)"
->
+<button onclick="showPage('classes',this)">
 📚 Classes
 </button>
 
-<button
- onclick="showPage('fees',this)"
->
+<button onclick="showPage('fees',this)">
 💰 Fees
 </button>
 
-<button
- onclick="showPage('attendance',this)"
->
+<button onclick="showPage('attendance',this)">
 📋 Attendance
 </button>
 
-<button
- onclick="showPage('results',this)"
->
+<button onclick="showPage('results',this)">
 📝 Results
 </button>
 
-<button
- onclick="showPage('reports',this)"
->
+<button onclick="showPage('reports',this)">
 📊 Reports
 </button>
 
-<button
- onclick="showPage('backup',this)"
->
+<button onclick="showPage('backup',this)">
 💾 Backup
 </button>
 
-<button
- onclick="showPage('settings',this)"
->
+<button onclick="showPage('settings',this)">
 ⚙️ Settings
 </button>
 
@@ -604,104 +612,177 @@ Logout
 <div class="content">
 
 
-<!-- DASHBOARD -->
+<!-- ================= DASHBOARD ================= -->
 
-<section
- class="page active"
- id="dashboard"
->
+<section class="page active" id="dashboard">
 
 <div class="print-header">
-
 <h1>Bismillah Educational Academy</h1>
-
 <p>Dashboard Report</p>
-
 </div>
 
-<h2>Dashboard</h2>
-
+<h2>🏠 Dashboard</h2>
 
 <div class="cards">
 
 <div class="card">
-
+<div class="dashboard-icon">👨‍🎓</div>
 <h3>Total Students</h3>
-
 <strong id="totalStudents">0</strong>
-
 </div>
 
-
-<div class="card">
-
-<h3>Active Students</h3>
-
-<strong id="activeStudents">0</strong>
-
+<div class="card expected">
+<div class="dashboard-icon">💰</div>
+<h3>Expected Fee</h3>
+<strong id="expectedFee">0</strong>
 </div>
 
-
-<div class="card">
-
-<h3>Inactive Students</h3>
-
-<strong id="inactiveStudents">0</strong>
-
-</div>
-
-
-<div class="card">
-
-<h3>Total Paid</h3>
-
+<div class="card received">
+<div class="dashboard-icon">💵</div>
+<h3>Received This Month</h3>
 <strong id="totalPaid">0</strong>
+</div>
 
+<div class="card remaining">
+<div class="dashboard-icon">⚠️</div>
+<h3>Remaining</h3>
+<strong id="remainingFee">0</strong>
+</div>
+
+<div class="card pending">
+<div class="dashboard-icon">🔴</div>
+<h3>Pending Fees</h3>
+<strong id="pendingFees">0</strong>
+</div>
+
+<div class="card">
+<div class="dashboard-icon">✅</div>
+<h3>Active Students</h3>
+<strong id="activeStudents">0</strong>
+</div>
+
+<div class="card">
+<div class="dashboard-icon">⛔</div>
+<h3>Inactive Students</h3>
+<strong id="inactiveStudents">0</strong>
+</div>
+
+<div class="card">
+<div class="dashboard-icon">📅</div>
+<h3>Current Month</h3>
+<strong id="currentMonthName">-</strong>
 </div>
 
 </div>
 
+
+<!-- QUICK ACTIONS -->
 
 <div class="panel">
 
 <div class="title">
-
-<h3>Quick Actions</h3>
-
+<h3>⚡ Quick Actions</h3>
 </div>
 
-<button
- class="btn green"
- onclick="openStudentModal()"
->
-+ Add Student
+<button class="btn green" onclick="openStudentModal()">
+➕ Add Student
 </button>
 
-<button
- class="btn"
- onclick="openFeeModal()"
->
-+ Add Fee
+<button class="btn" onclick="openFeeModal()">
+💰 Collect Fee
 </button>
 
-<button
- class="btn orange"
- onclick="openAttendanceModal()"
->
-Attendance
+<button class="btn orange" onclick="openAttendanceModal()">
+📋 Attendance
 </button>
 
-<button
- class="btn gray"
- onclick="printPage('dashboard')"
->
+<button class="btn purple" onclick="openResultModal()">
+📝 Result
+</button>
+
+<button class="btn gray" onclick="printPage('dashboard')">
 🖨️ Print / PDF
 </button>
 
 </div>
 
 
-<!-- DASHBOARD CLASS CARDS -->
+<!-- PENDING FEES -->
+
+<div class="panel">
+
+<div class="title">
+
+<h3>🔴 Pending Fees</h3>
+
+<button class="btn orange small" onclick="showPage('fees')">
+View All Fees
+</button>
+
+</div>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Student</th>
+<th>Father</th>
+<th>Class</th>
+<th>Monthly Fee</th>
+<th>Paid</th>
+<th>Due</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="pendingFeesTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- RECENT PAYMENTS -->
+
+<div class="panel">
+
+<div class="title">
+<h3>💳 Recent Payments</h3>
+</div>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Student</th>
+<th>Class</th>
+<th>Month</th>
+<th>Paid</th>
+<th>Status</th>
+<th>Date</th>
+</tr>
+
+</thead>
+
+<tbody id="recentPayments"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- CLASS WISE -->
 
 <div class="panel">
 
@@ -709,26 +790,22 @@ Attendance
 
 <h3>📚 Class Wise Students</h3>
 
-<button
- class="btn purple small"
- onclick="showPage('classes')"
->
+<button class="btn purple small" onclick="showPage('classes')">
 View All Classes
 </button>
 
 </div>
 
-<div
- class="class-grid"
- id="dashboardClasses"
-></div>
+<div class="class-grid" id="dashboardClasses"></div>
 
 </div>
 
 
+<!-- RECENT STUDENTS -->
+
 <div class="panel">
 
-<h3>Recent Students</h3>
+<h3>👨‍🎓 Recent Students</h3>
 
 <br>
 
@@ -758,48 +835,34 @@ View All Classes
 </section>
 
 
-<!-- STUDENTS -->
+<!-- ================= STUDENTS ================= -->
 
-<section
- class="page"
- id="students"
->
+<section class="page" id="students">
 
 <div class="print-header">
-
 <h1>Bismillah Educational Academy</h1>
-
 <p>Students List</p>
-
 </div>
-
 
 <div class="panel">
 
 <div class="title">
 
-<h2>Students</h2>
+<h2>👨‍🎓 Students</h2>
 
 <div>
 
-<button
- class="btn green no-print"
- onclick="openStudentModal()"
->
+<button class="btn green no-print" onclick="openStudentModal()">
 + Add Student
 </button>
 
-<button
- class="btn gray no-print"
- onclick="printPage('students')"
->
+<button class="btn gray no-print" onclick="printPage('students')">
 🖨️ Print / PDF
 </button>
 
 </div>
 
 </div>
-
 
 <div class="toolbar no-print">
 
@@ -809,15 +872,9 @@ View All Classes
  oninput="renderStudents()"
 >
 
-<select
- id="studentClassFilter"
- onchange="renderStudents()"
-></select>
+<select id="studentClassFilter" onchange="renderStudents()"></select>
 
-<select
- id="studentStatusFilter"
- onchange="renderStudents()"
->
+<select id="studentStatusFilter" onchange="renderStudents()">
 
 <option value="">All Status</option>
 <option>Active</option>
@@ -827,7 +884,6 @@ View All Classes
 
 </div>
 
-
 <div class="table-wrap">
 
 <table>
@@ -835,7 +891,6 @@ View All Classes
 <thead>
 
 <tr>
-
 <th>Name</th>
 <th>Father Name</th>
 <th>Roll No</th>
@@ -845,7 +900,6 @@ View All Classes
 <th>Fee</th>
 <th>Status</th>
 <th class="no-print">Actions</th>
-
 </tr>
 
 </thead>
@@ -861,21 +915,16 @@ View All Classes
 </section>
 
 
-<!-- CLASSES -->
+<!-- ================= CLASSES ================= -->
 
-<section
- class="page"
- id="classes"
->
+<section class="page" id="classes">
 
 <div class="print-header">
 
 <h1>Bismillah Educational Academy</h1>
-
 <p>Class Wise Report</p>
 
 </div>
-
 
 <div class="panel">
 
@@ -883,49 +932,30 @@ View All Classes
 
 <h2>📚 Classes</h2>
 
-<button
- class="btn gray no-print"
- onclick="printPage('classes')"
->
+<button class="btn gray no-print" onclick="printPage('classes')">
 🖨️ Print / PDF
 </button>
 
 </div>
 
-
-<div
- class="class-grid"
- id="allClasses"
-></div>
+<div class="class-grid" id="allClasses"></div>
 
 </div>
 
 
-<div
- class="panel"
- id="classDetails"
- style="display:none"
->
+<div class="panel" id="classDetails" style="display:none">
 
 <div class="title">
 
-<h2 id="selectedClassTitle">
-Class
-</h2>
+<h2 id="selectedClassTitle">Class</h2>
 
 <div>
 
-<button
- class="btn green no-print"
- onclick="openStudentModal()"
->
+<button class="btn green no-print" onclick="openStudentModal()">
 + Add Student
 </button>
 
-<button
- class="btn gray no-print"
- onclick="printPage('classes')"
->
+<button class="btn gray no-print" onclick="printPage('classes')">
 🖨️ Print
 </button>
 
@@ -933,43 +963,29 @@ Class
 
 </div>
 
-
 <div class="cards">
 
 <div class="card">
-
 <h3>Students</h3>
-
 <strong id="classStudentCount">0</strong>
-
 </div>
 
 <div class="card">
-
 <h3>Total Fee</h3>
-
 <strong id="classTotalFee">0</strong>
-
 </div>
 
 <div class="card">
-
 <h3>Total Paid</h3>
-
 <strong id="classPaid">0</strong>
-
 </div>
 
 <div class="card">
-
 <h3>Total Due</h3>
-
 <strong id="classDue">0</strong>
-
 </div>
 
 </div>
-
 
 <div class="table-wrap">
 
@@ -978,7 +994,6 @@ Class
 <thead>
 
 <tr>
-
 <th>Name</th>
 <th>Father</th>
 <th>Roll No</th>
@@ -986,7 +1001,6 @@ Class
 <th>Monthly Fee</th>
 <th>Status</th>
 <th class="no-print">Action</th>
-
 </tr>
 
 </thead>
@@ -1002,41 +1016,30 @@ Class
 </section>
 
 
-<!-- FEES -->
+<!-- ================= FEES ================= -->
 
-<section
- class="page"
- id="fees"
->
+<section class="page" id="fees">
 
 <div class="print-header">
 
 <h1>Bismillah Educational Academy</h1>
-
 <p>Fee History Report</p>
 
 </div>
-
 
 <div class="panel">
 
 <div class="title">
 
-<h2>Fees / Monthly History</h2>
+<h2>💰 Fees / Monthly History</h2>
 
 <div>
 
-<button
- class="btn green no-print"
- onclick="openFeeModal()"
->
+<button class="btn green no-print" onclick="openFeeModal()">
 + Add Fee
 </button>
 
-<button
- class="btn gray no-print"
- onclick="printPage('fees')"
->
+<button class="btn gray no-print" onclick="printPage('fees')">
 🖨️ Print / PDF
 </button>
 
@@ -1044,31 +1047,17 @@ Class
 
 </div>
 
-
 <div class="toolbar no-print">
 
-<select
- id="feeStudentFilter"
- onchange="renderFees()"
-></select>
+<select id="feeStudentFilter" onchange="renderFees()"></select>
 
-<select
- id="feeClassFilter"
- onchange="renderFees()"
-></select>
+<select id="feeClassFilter" onchange="renderFees()"></select>
 
-<select
- id="feeMonthFilter"
- onchange="renderFees()"
-></select>
+<select id="feeMonthFilter" onchange="renderFees()"></select>
 
-<select
- id="feeYearFilter"
- onchange="renderFees()"
-></select>
+<select id="feeYearFilter" onchange="renderFees()"></select>
 
 </div>
-
 
 <div class="table-wrap">
 
@@ -1077,7 +1066,6 @@ Class
 <thead>
 
 <tr>
-
 <th>Student</th>
 <th>Class</th>
 <th>Month</th>
@@ -1088,7 +1076,6 @@ Class
 <th>Payment Date</th>
 <th>Status</th>
 <th class="no-print">Action</th>
-
 </tr>
 
 </thead>
@@ -1104,48 +1091,36 @@ Class
 </section>
 
 
-<!-- ATTENDANCE -->
+<!-- ================= ATTENDANCE ================= -->
 
-<section
- class="page"
- id="attendance"
->
+<section class="page" id="attendance">
 
 <div class="print-header">
 
 <h1>Bismillah Educational Academy</h1>
-
 <p>Attendance Report</p>
 
 </div>
-
 
 <div class="panel">
 
 <div class="title">
 
-<h2>Attendance</h2>
+<h2>📋 Attendance</h2>
 
 <div>
 
-<button
- class="btn green no-print"
- onclick="openAttendanceModal()"
->
+<button class="btn green no-print" onclick="openAttendanceModal()">
 + Mark Attendance
 </button>
 
-<button
- class="btn gray no-print"
- onclick="printPage('attendance')"
->
+<button class="btn gray no-print" onclick="printPage('attendance')">
 🖨️ Print / PDF
 </button>
 
 </div>
 
 </div>
-
 
 <div class="toolbar no-print">
 
@@ -1155,13 +1130,9 @@ Class
  onchange="renderAttendance()"
 >
 
-<select
- id="attendanceClassFilter"
- onchange="renderAttendance()"
-></select>
+<select id="attendanceClassFilter" onchange="renderAttendance()"></select>
 
 </div>
-
 
 <div class="table-wrap">
 
@@ -1170,13 +1141,11 @@ Class
 <thead>
 
 <tr>
-
 <th>Date</th>
 <th>Student</th>
 <th>Class</th>
 <th>Status</th>
 <th>Remarks</th>
-
 </tr>
 
 </thead>
@@ -1192,41 +1161,30 @@ Class
 </section>
 
 
-<!-- RESULTS -->
+<!-- ================= RESULTS ================= -->
 
-<section
- class="page"
- id="results"
->
+<section class="page" id="results">
 
 <div class="print-header">
 
 <h1>Bismillah Educational Academy</h1>
-
 <p>Results Report</p>
 
 </div>
-
 
 <div class="panel">
 
 <div class="title">
 
-<h2>Tests & Results</h2>
+<h2>📝 Tests & Results</h2>
 
 <div>
 
-<button
- class="btn green no-print"
- onclick="openResultModal()"
->
+<button class="btn green no-print" onclick="openResultModal()">
 + Add Result
 </button>
 
-<button
- class="btn gray no-print"
- onclick="printPage('results')"
->
+<button class="btn gray no-print" onclick="printPage('results')">
 🖨️ Print / PDF
 </button>
 
@@ -1234,21 +1192,13 @@ Class
 
 </div>
 
-
 <div class="toolbar no-print">
 
-<select
- id="resultStudentFilter"
- onchange="renderResults()"
-></select>
+<select id="resultStudentFilter" onchange="renderResults()"></select>
 
-<select
- id="resultClassFilter"
- onchange="renderResults()"
-></select>
+<select id="resultClassFilter" onchange="renderResults()"></select>
 
 </div>
-
 
 <div class="table-wrap">
 
@@ -1257,7 +1207,6 @@ Class
 <thead>
 
 <tr>
-
 <th>Student</th>
 <th>Class</th>
 <th>Test</th>
@@ -1267,7 +1216,6 @@ Class
 <th>%</th>
 <th>Grade</th>
 <th>Date</th>
-
 </tr>
 
 </thead>
@@ -1283,70 +1231,49 @@ Class
 </section>
 
 
-<!-- REPORTS -->
+<!-- ================= REPORTS ================= -->
 
-<section
- class="page"
- id="reports"
->
+<section class="page" id="reports">
 
 <div class="print-header">
 
 <h1>Bismillah Educational Academy</h1>
-
 <p>Academy Report</p>
 
 </div>
-
 
 <div class="panel">
 
 <div class="title">
 
-<h2>Reports</h2>
+<h2>📊 Reports</h2>
 
-<button
- class="btn gray no-print"
- onclick="printPage('reports')"
->
+<button class="btn gray no-print" onclick="printPage('reports')">
 🖨️ Print / PDF
 </button>
 
 </div>
 
-
 <div class="cards">
 
 <div class="card">
-
 <h3>Total Fee</h3>
-
 <strong id="reportTotalFee">0</strong>
-
 </div>
 
 <div class="card">
-
 <h3>Total Paid</h3>
-
 <strong id="reportPaid">0</strong>
-
 </div>
 
 <div class="card">
-
 <h3>Total Due</h3>
-
 <strong id="reportDue">0</strong>
-
 </div>
 
 <div class="card">
-
 <h3>Total Results</h3>
-
 <strong id="reportResults">0</strong>
-
 </div>
 
 </div>
@@ -1356,50 +1283,33 @@ Class
 </section>
 
 
-<!-- BACKUP -->
+<!-- ================= BACKUP ================= -->
 
-<section
- class="page"
- id="backup"
->
+<section class="page" id="backup">
 
 <div class="panel">
 
 <div class="title">
 
-<h2>Backup & Restore</h2>
+<h2>💾 Backup & Restore</h2>
 
-<button
- class="btn gray no-print"
- onclick="printPage('backup')"
->
+<button class="btn gray no-print" onclick="printPage('backup')">
 🖨️ Print / PDF
 </button>
 
 </div>
 
-
 <div class="notice">
-
 Backup includes Students, Fees, Attendance and Results.
-
 </div>
 
-
-<button
- class="btn green"
- onclick="downloadBackup()"
->
+<button class="btn green" onclick="downloadBackup()">
 ⬇️ Download Backup
 </button>
 
-<button
- class="btn orange"
- onclick="document.getElementById('restoreFile').click()"
->
+<button class="btn orange" onclick="document.getElementById('restoreFile').click()">
 ⬆️ Restore Backup
 </button>
-
 
 <input
  type="file"
@@ -1409,14 +1319,9 @@ Backup includes Students, Fees, Attendance and Results.
  onchange="restoreBackup(event)"
 >
 
-
 <hr style="margin:18px 0">
 
-
-<button
- class="btn red"
- onclick="clearLocalData()"
->
+<button class="btn red" onclick="clearLocalData()">
 Clear Local Data
 </button>
 
@@ -1425,37 +1330,27 @@ Clear Local Data
 </section>
 
 
-<!-- SETTINGS -->
+<!-- ================= SETTINGS ================= -->
 
-<section
- class="page"
- id="settings"
->
+<section class="page" id="settings">
 
 <div class="panel">
 
-<h2>Settings</h2>
+<h2>⚙️ Settings</h2>
 
 <br>
 
 <label>Academy Name</label>
-
 <input id="academyNameSetting">
 
 <label>Campus</label>
-
 <input id="campusSetting">
 
-<button
- class="btn green"
- onclick="saveSettings()"
->
+<button class="btn green" onclick="saveSettings()">
 Save Settings
 </button>
 
-
 <hr style="margin:20px 0">
-
 
 <h3>Change Admin Password</h3>
 
@@ -1467,10 +1362,7 @@ Save Settings
  placeholder="New password"
 >
 
-<button
- class="btn"
- onclick="changePassword()"
->
+<button class="btn" onclick="changePassword()">
 Change Password
 </button>
 
@@ -1483,36 +1375,23 @@ Change Password
 </div>
 
 
-<!-- STUDENT MODAL -->
+<!-- ================= STUDENT MODAL ================= -->
 
-<div
- class="modal"
- id="studentModal"
->
+<div class="modal" id="studentModal">
 
 <div class="modal-box">
 
 <div class="modal-head">
 
-<h2 id="studentModalTitle">
-Add Student
-</h2>
+<h2 id="studentModalTitle">Add Student</h2>
 
-<button
- class="close"
- onclick="closeModal('studentModal')"
->
+<button class="close" onclick="closeModal('studentModal')">
 ✕
 </button>
 
 </div>
 
-
-<input
- type="hidden"
- id="studentEditId"
->
-
+<input type="hidden" id="studentEditId">
 
 <div class="form-grid">
 
@@ -1555,28 +1434,19 @@ Add Student
 <label>Status</label>
 
 <select id="studentStatus">
-
 <option>Active</option>
 <option>Inactive</option>
-
 </select>
 
 </div>
 
 </div>
 
-
-<button
- class="btn green"
- onclick="saveStudent()"
->
+<button class="btn green" onclick="saveStudent()">
 Save Student
 </button>
 
-<button
- class="btn gray"
- onclick="closeModal('studentModal')"
->
+<button class="btn gray" onclick="closeModal('studentModal')">
 Cancel
 </button>
 
@@ -1584,96 +1454,65 @@ Cancel
 </div>
 
 
-<!-- FEE MODAL -->
+<!-- ================= FEE MODAL ================= -->
 
-<div
- class="modal"
- id="feeModal"
->
+<div class="modal" id="feeModal">
 
 <div class="modal-box">
 
 <div class="modal-head">
 
-<h2>Monthly Fee</h2>
+<h2>💰 Monthly Fee</h2>
 
-<button
- class="close"
- onclick="closeModal('feeModal')"
->
+<button class="close" onclick="closeModal('feeModal')">
 ✕
 </button>
 
 </div>
-
 
 <div class="form-grid">
 
 <div>
 
 <label>Student *</label>
-
 <select id="feeStudent"></select>
 
 </div>
 
-
 <div>
 
 <label>Fee Month *</label>
-
 <select id="feeMonth"></select>
 
 </div>
 
-
 <div>
 
 <label>Fee Year *</label>
-
-<input
- type="number"
- id="feeYear"
->
+<input type="number" id="feeYear">
 
 </div>
-
 
 <div>
 
 <label>Amount</label>
-
-<input
- type="number"
- id="feeAmount"
->
+<input type="number" id="feeAmount">
 
 </div>
-
 
 <div>
 
 <label>Paid Amount</label>
-
-<input
- type="number"
- id="paidAmount"
->
+<input type="number" id="paidAmount">
 
 </div>
-
 
 <div>
 
 <label>Payment Date</label>
-
-<input
- type="date"
- id="paymentDate"
->
+<input type="date" id="paymentDate">
 
 </div>
-
 
 <div>
 
@@ -1689,29 +1528,20 @@ Cancel
 
 </div>
 
-
 <div>
 
 <label>Notes</label>
-
 <input id="feeNotes">
 
 </div>
 
 </div>
 
-
-<button
- class="btn green"
- onclick="saveFee()"
->
+<button class="btn green" onclick="saveFee()">
 Save Fee
 </button>
 
-<button
- class="btn gray"
- onclick="closeModal('feeModal')"
->
+<button class="btn gray" onclick="closeModal('feeModal')">
 Cancel
 </button>
 
@@ -1719,41 +1549,29 @@ Cancel
 </div>
 
 
-<!-- ATTENDANCE MODAL -->
+<!-- ================= ATTENDANCE MODAL ================= -->
 
-<div
- class="modal"
- id="attendanceModal"
->
+<div class="modal" id="attendanceModal">
 
 <div class="modal-box">
 
 <div class="modal-head">
 
-<h2>Mark Attendance</h2>
+<h2>📋 Mark Attendance</h2>
 
-<button
- class="close"
- onclick="closeModal('attendanceModal')"
->
+<button class="close" onclick="closeModal('attendanceModal')">
 ✕
 </button>
 
 </div>
 
-
 <label>Date</label>
 
-<input
- type="date"
- id="attendanceDate"
->
-
+<input type="date" id="attendanceDate">
 
 <label>Student</label>
 
 <select id="attendanceStudent"></select>
-
 
 <label>Status</label>
 
@@ -1765,23 +1583,15 @@ Cancel
 
 </select>
 
-
 <label>Remarks</label>
 
 <input id="attendanceRemarks">
 
-
-<button
- class="btn green"
- onclick="saveAttendance()"
->
+<button class="btn green" onclick="saveAttendance()">
 Save Attendance
 </button>
 
-<button
- class="btn gray"
- onclick="closeModal('attendanceModal')"
->
+<button class="btn gray" onclick="closeModal('attendanceModal')">
 Cancel
 </button>
 
@@ -1789,116 +1599,66 @@ Cancel
 </div>
 
 
-<!-- RESULT MODAL -->
+<!-- ================= RESULT MODAL ================= -->
 
-<div
- class="modal"
- id="resultModal"
->
+<div class="modal" id="resultModal">
 
 <div class="modal-box">
 
 <div class="modal-head">
 
-<h2>Add Result</h2>
+<h2>📝 Add Result</h2>
 
-<button
- class="close"
- onclick="closeModal('resultModal')"
->
+<button class="close" onclick="closeModal('resultModal')">
 ✕
 </button>
 
 </div>
 
-
 <div class="form-grid">
 
 <div>
-
 <label>Student</label>
-
 <select id="resultStudent"></select>
-
 </div>
 
-
 <div>
-
 <label>Test Name</label>
-
 <input id="testName">
-
 </div>
 
-
 <div>
-
 <label>Subject</label>
-
 <input id="subject">
-
 </div>
 
-
 <div>
-
 <label>Total Marks</label>
-
-<input
- type="number"
- id="totalMarks"
->
-
+<input type="number" id="totalMarks">
 </div>
 
-
 <div>
-
 <label>Obtained Marks</label>
-
-<input
- type="number"
- id="obtainedMarks"
->
-
+<input type="number" id="obtainedMarks">
 </div>
 
-
 <div>
-
 <label>Test Date</label>
-
-<input
- type="date"
- id="testDate"
->
-
+<input type="date" id="testDate">
 </div>
-
 
 <div>
-
 <label>Remarks</label>
-
 <input id="resultRemarks">
-
 </div>
 
 </div>
 
-
-<button
- class="btn green"
- onclick="saveResult()"
->
+<button class="btn green" onclick="saveResult()">
 Save Result
 </button>
 
-<button
- class="btn gray"
- onclick="closeModal('resultModal')"
->
+<button class="btn gray" onclick="closeModal('resultModal')">
 Cancel
 </button>
 
@@ -1908,18 +1668,17 @@ Cancel
 
 <script>
 
-/* =========================
- SUPABASE
-========================= */
+/* =========================================================
+   SUPABASE
+========================================================= */
 
-const SUPABASE_URL=
+const SUPABASE_URL =
 "https://xpgallgzqeblnksuozba.supabase.co";
 
-const SUPABASE_KEY=
-"sb_publishable_PJ1F2ErK4h1Waw49RnIUcw_iAbTQj0L";
+const SUPABASE_KEY =
+"sb_publishable_PJ1F2ErK4h1Waw49RnIUcw_iAbTqj0L";
 
-
-const TABLES={
+const TABLES = {
  students:"students",
  results:"results",
  fees:"fees",
@@ -1927,23 +1686,28 @@ const TABLES={
 };
 
 
-/* =========================
- CLASSES
-========================= */
+/* =========================================================
+   CLASSES
+========================================================= */
 
-const CLASSES=[
-"ECE","Nursery","Prep","1st","2nd","3rd","4th","5th",
-"6th","7th","8th","9th","10th","1st Year","2nd Year"
+const CLASSES = [
+ "ECE","Nursery","Prep",
+ "1st","2nd","3rd","4th","5th",
+ "6th","7th","8th","9th","10th",
+ "1st Year","2nd Year"
+];
+
+const MONTHS = [
+ "January","February","March","April","May","June",
+ "July","August","September","October","November","December"
 ];
 
 
-const MONTHS=[
-"January","February","March","April","May","June",
-"July","August","September","October","November","December"
-];
+/* =========================================================
+   DATABASE
+========================================================= */
 
-
-let db={
+let db = {
 
  students:[],
  fees:[],
@@ -1956,16 +1720,17 @@ let db={
  },
 
  adminPassword:"12345"
+
 };
 
 
-/* =========================
- SUPABASE API
-========================= */
+/* =========================================================
+   SUPABASE API
+========================================================= */
 
 async function supa(path,options={}){
 
- const headers={
+ const headers = {
 
   "apikey":SUPABASE_KEY,
 
@@ -1979,8 +1744,7 @@ async function supa(path,options={}){
 
  };
 
-
- const response=
+ const response =
  await fetch(
   SUPABASE_URL+
   "/rest/v1/"+
@@ -1988,29 +1752,27 @@ async function supa(path,options={}){
   {...options,headers}
  );
 
-
  if(!response.ok){
 
-  const text=
+  const text =
   await response.text();
 
   throw new Error(
-   text||("HTTP "+response.status)
+   text || ("HTTP "+response.status)
   );
 
  }
 
-
  if(response.status===204)
  return null;
 
-
- const text=
+ const text =
  await response.text();
 
- return text?
- JSON.parse(text):
+ return text ?
+ JSON.parse(text) :
  null;
+
 }
 
 
@@ -2038,6 +1800,7 @@ async function insertTable(table,row){
    body:JSON.stringify(row)
   }
  );
+
 }
 
 
@@ -2047,7 +1810,6 @@ async function updateTable(table,id,row){
   table+
   "?id=eq."+
   encodeURIComponent(id),
-
   {
    method:"PATCH",
 
@@ -2059,6 +1821,7 @@ async function updateTable(table,id,row){
    body:JSON.stringify(row)
   }
  );
+
 }
 
 
@@ -2068,17 +1831,17 @@ async function deleteTable(table,id){
   table+
   "?id=eq."+
   encodeURIComponent(id),
-
   {
    method:"DELETE"
   }
  );
+
 }
 
 
-/* =========================
- LOCAL STORAGE
-========================= */
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
 
 function saveLocal(){
 
@@ -2094,17 +1857,18 @@ function loadLocal(){
 
  try{
 
-  const x=
+  const x =
   localStorage.getItem(
    "bea_local_backup"
   );
 
   if(x){
 
-   const data=
+   const data =
    JSON.parse(x);
 
-   db={
+   db = {
+
     ...db,
     ...data,
 
@@ -2112,6 +1876,7 @@ function loadLocal(){
      ...db.settings,
      ...(data.settings||{})
     }
+
    };
 
   }
@@ -2121,12 +1886,13 @@ function loadLocal(){
   console.log(e);
 
  }
+
 }
 
 
-/* =========================
- CLOUD LOAD
-========================= */
+/* =========================================================
+   CLOUD LOAD
+========================================================= */
 
 async function loadCloud(){
 
@@ -2137,7 +1903,7 @@ async function loadCloud(){
    fees,
    attendance,
    results
-  ]=
+  ] =
   await Promise.all([
 
    getTable(TABLES.students),
@@ -2147,19 +1913,23 @@ async function loadCloud(){
 
   ]);
 
+  /*
+   IMPORTANT:
+   Cloud data is loaded only.
+   Nothing is deleted.
+  */
 
-  db.students=
-  students||[];
+  db.students =
+  students || [];
 
-  db.fees=
-  fees||[];
+  db.fees =
+  fees || [];
 
-  db.attendance=
-  attendance||[];
+  db.attendance =
+  attendance || [];
 
-  db.results=
-  results||[];
-
+  db.results =
+  results || [];
 
   saveLocal();
 
@@ -2179,20 +1949,20 @@ async function loadCloud(){
   );
 
  }
+
 }
 
 
-/* =========================
- LOGIN
-========================= */
+/* =========================================================
+   LOGIN
+========================================================= */
 
 function login(){
 
- const p=
+ const p =
  document.getElementById(
   "loginPassword"
  ).value;
-
 
  if(p===db.adminPassword){
 
@@ -2211,6 +1981,7 @@ function login(){
   alert("Wrong password!");
 
  }
+
 }
 
 
@@ -2221,9 +1992,9 @@ function logout(){
 }
 
 
-/* =========================
- INITIALIZE
-========================= */
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
 function initialize(){
 
@@ -2240,13 +2011,13 @@ function initialize(){
 }
 
 
-/* =========================
- CLASS DROPDOWNS
-========================= */
+/* =========================================================
+   CLASS DROPDOWNS
+========================================================= */
 
 function fillClasses(){
 
- const ids=[
+ const ids = [
 
   "className",
   "studentClassFilter",
@@ -2256,33 +2027,28 @@ function fillClasses(){
 
  ];
 
-
  ids.forEach(id=>{
 
-  const el=
+  const el =
   document.getElementById(id);
 
   if(!el)return;
 
-
   el.innerHTML="";
-
 
   if(id!=="className"){
 
-   el.innerHTML=
+   el.innerHTML =
    '<option value="">All Classes</option>';
 
   }
 
-
   CLASSES.forEach(c=>{
 
-   const o=
+   const o =
    document.createElement("option");
 
    o.value=c;
-
    o.textContent=c;
 
    el.appendChild(o);
@@ -2294,28 +2060,25 @@ function fillClasses(){
 }
 
 
-/* =========================
- MONTHS
-========================= */
+/* =========================================================
+   MONTH DROPDOWNS
+========================================================= */
 
 function fillMonths(){
 
- const feeMonth=
+ const feeMonth =
  document.getElementById(
   "feeMonth"
  );
 
-
  feeMonth.innerHTML="";
-
 
  MONTHS.forEach((m,i)=>{
 
-  const o=
+  const o =
   document.createElement("option");
 
   o.value=i+1;
-
   o.textContent=m;
 
   feeMonth.appendChild(o);
@@ -2323,23 +2086,20 @@ function fillMonths(){
  });
 
 
- const filter=
+ const filter =
  document.getElementById(
   "feeMonthFilter"
  );
 
-
- filter.innerHTML=
+ filter.innerHTML =
  '<option value="">All Months</option>';
-
 
  MONTHS.forEach((m,i)=>{
 
-  const o=
+  const o =
   document.createElement("option");
 
   o.value=i+1;
-
   o.textContent=m;
 
   filter.appendChild(o);
@@ -2349,9 +2109,9 @@ function fillMonths(){
 }
 
 
-/* =========================
- NAVIGATION
-========================= */
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
 function showPage(id,btn){
 
@@ -2360,10 +2120,11 @@ function showPage(id,btn){
   x.classList.remove("active")
  );
 
+ const page =
+ document.getElementById(id);
 
- document.getElementById(id)
- .classList.add("active");
-
+ if(page)
+ page.classList.add("active");
 
  document.querySelectorAll(
   ".sidebar button"
@@ -2372,39 +2133,43 @@ function showPage(id,btn){
   x.classList.remove("active")
  );
 
-
  if(btn)
  btn.classList.add("active");
-
 
  renderAll();
 
 }
 
 
-/* =========================
- MODALS
-========================= */
+/* =========================================================
+   MODALS
+========================================================= */
 
 function openModal(id){
 
- document.getElementById(id)
- .classList.add("show");
+ const el =
+ document.getElementById(id);
+
+ if(el)
+ el.classList.add("show");
 
 }
 
 
 function closeModal(id){
 
- document.getElementById(id)
- .classList.remove("show");
+ const el =
+ document.getElementById(id);
+
+ if(el)
+ el.classList.remove("show");
 
 }
 
 
-/* =========================
- STUDENT MODAL
-========================= */
+/* =========================================================
+   STUDENT MODAL
+========================================================= */
 
 function openStudentModal(id=null){
 
@@ -2412,68 +2177,66 @@ function openStudentModal(id=null){
   "studentEditId"
  ).value=id||"";
 
-
  if(id){
 
-  const s=
+  const s =
   db.students.find(
    x=>x.id===id
   );
 
   if(!s)return;
 
-
   document.getElementById(
    "studentModalTitle"
-  ).textContent="Edit Student";
-
+  ).textContent =
+  "Edit Student";
 
   document.getElementById(
    "studentName"
-  ).value=s.student_name||"";
-
+  ).value =
+  s.student_name||"";
 
   document.getElementById(
    "fatherName"
-  ).value=s.father_name||"";
-
+  ).value =
+  s.father_name||"";
 
   document.getElementById(
    "rollNo"
-  ).value=s.roll_no||"";
-
+  ).value =
+  s.roll_no||"";
 
   document.getElementById(
    "className"
-  ).value=s.class_name||"";
-
+  ).value =
+  s.class_name||"";
 
   document.getElementById(
    "mobileNo"
-  ).value=s.mobile_no||"";
-
+  ).value =
+  s.mobile_no||"";
 
   document.getElementById(
    "admissionDate"
-  ).value=s.admission_date||"";
-
+  ).value =
+  s.admission_date||"";
 
   document.getElementById(
    "monthlyFee"
-  ).value=s.monthly_fee||0;
-
+  ).value =
+  s.monthly_fee||0;
 
   document.getElementById(
    "studentStatus"
-  ).value=s.status||"Active";
-
+  ).value =
+  s.status||"Active";
 
  }else{
 
   document.getElementById(
    "studentModalTitle"
-  ).textContent="Add Student";
-
+  ).textContent =
+  "Add Student";
 
   [
    "studentName",
@@ -2488,19 +2251,17 @@ function openStudentModal(id=null){
 
   });
 
-
   document.getElementById(
    "admissionDate"
-  ).value=
+  ).value =
   new Date()
   .toISOString()
   .slice(0,10);
 
-
   document.getElementById(
    "studentStatus"
-  ).value="Active";
-
+  ).value =
+  "Active";
 
   document.getElementById(
    "className"
@@ -2508,73 +2269,63 @@ function openStudentModal(id=null){
 
  }
 
-
  openModal("studentModal");
 
 }
 
 
-/* =========================
- SAVE STUDENT
-========================= */
+/* =========================================================
+   SAVE STUDENT
+========================================================= */
 
 async function saveStudent(){
 
- const name=
+ const name =
  document.getElementById(
   "studentName"
  ).value.trim();
 
-
- const father=
+ const father =
  document.getElementById(
   "fatherName"
  ).value.trim();
 
-
- const roll=
+ const roll =
  document.getElementById(
   "rollNo"
  ).value.trim();
 
-
- const cls=
+ const cls =
  document.getElementById(
   "className"
  ).value;
 
-
- const mobile=
+ const mobile =
  document.getElementById(
   "mobileNo"
  ).value.trim();
 
-
- const admission=
+ const admission =
  document.getElementById(
   "admissionDate"
  ).value;
 
-
- const fee=
+ const fee =
  Number(
   document.getElementById(
    "monthlyFee"
   ).value||0
  );
 
-
- const status=
+ const status =
  document.getElementById(
   "studentStatus"
  ).value;
 
-
- const editId=
+ const editId =
  document.getElementById(
   "studentEditId"
  ).value;
-
 
  if(!name||!father||!cls){
 
@@ -2586,10 +2337,9 @@ async function saveStudent(){
 
  }
 
-
  if(roll){
 
-  const duplicate=
+  const duplicate =
   db.students.find(s=>
 
    s.id!==editId&&
@@ -2597,7 +2347,6 @@ async function saveStudent(){
    s.roll_no===roll
 
   );
-
 
   if(duplicate){
 
@@ -2611,25 +2360,21 @@ async function saveStudent(){
 
  }
 
-
- const now=
+ const now =
  new Date().toISOString();
-
 
  try{
 
   if(editId){
 
-   const old=
+   const old =
    db.students.find(
     s=>s.id===editId
    );
 
-
    if(!old)return;
 
-
-   const row={
+   const row = {
 
     student_name:name,
     father_name:father,
@@ -2643,24 +2388,20 @@ async function saveStudent(){
 
    };
 
-
    await updateTable(
     TABLES.students,
     editId,
     row
    );
 
-
    Object.assign(old,row);
-
 
   }else{
 
-   const id=
+   const id =
    crypto.randomUUID();
 
-
-   const row={
+   const row = {
 
     id:id,
 
@@ -2678,17 +2419,14 @@ async function saveStudent(){
 
    };
 
-
    await insertTable(
     TABLES.students,
     row
    );
 
-
    db.students.push(row);
 
   }
-
 
   saveLocal();
 
@@ -2696,11 +2434,9 @@ async function saveStudent(){
 
   renderAll();
 
-
   alert(
    "Student saved successfully."
   );
-
 
  }catch(e){
 
@@ -2716,149 +2452,46 @@ async function saveStudent(){
 }
 
 
-/* =========================
- DELETE STUDENT
-========================= */
+/* =========================================================
+   DELETE STUDENT
+   IMPORTANT:
+   BUTTON REMAINS BUT STUDENT CANNOT BE DELETED
+========================================================= */
 
-async function deleteStudent(id){
+function deleteStudent(id){
 
- const s=
+ const s =
  db.students.find(
   x=>x.id===id
  );
 
-
  if(!s)return;
 
-
- if(!confirm(
-
-  "Delete "+
-  s.student_name+
-  "?\n\n"+
-  "Student and related records will be deleted."
-
- ))return;
-
-
- try{
-
-  const relatedFees=
-  db.fees.filter(
-   x=>x.student_id===id
-  );
-
-
-  const relatedAttendance=
-  db.attendance.filter(
-   x=>x.student_id===id
-  );
-
-
-  const relatedResults=
-  db.results.filter(
-   x=>x.student_id===id
-  );
-
-
-  for(const x of relatedFees)
-
-   await deleteTable(
-    TABLES.fees,
-    x.id
-   );
-
-
-  for(const x of relatedAttendance)
-
-   await deleteTable(
-    TABLES.attendance,
-    x.id
-   );
-
-
-  for(const x of relatedResults)
-
-   await deleteTable(
-    TABLES.results,
-    x.id
-   );
-
-
-  await deleteTable(
-   TABLES.students,
-   id
-  );
-
-
-  db.students=
-  db.students.filter(
-   x=>x.id!==id
-  );
-
-
-  db.fees=
-  db.fees.filter(
-   x=>x.student_id!==id
-  );
-
-
-  db.attendance=
-  db.attendance.filter(
-   x=>x.student_id!==id
-  );
-
-
-  db.results=
-  db.results.filter(
-   x=>x.student_id!==id
-  );
-
-
-  saveLocal();
-
-  renderAll();
-
-
-  alert(
-   "Student deleted successfully."
-  );
-
-
- }catch(e){
-
-  alert(
-   "Delete failed:\n\n"+
-   e.message
-  );
-
-  await loadCloud();
-
- }
+ alert(
+  "🔒 Student deletion is disabled.\n\n"+
+  "This student record is protected and cannot be deleted."
+ );
 
 }
 
 
-/* =========================
- STATUS
-========================= */
+/* =========================================================
+   STATUS
+========================================================= */
 
 async function toggleStudent(id){
 
- const s=
+ const s =
  db.students.find(
   x=>x.id===id
  );
 
-
  if(!s)return;
 
-
- const status=
+ const status =
  s.status==="Active"
- ?"Inactive"
- :"Active";
-
+ ? "Inactive"
+ : "Active";
 
  try{
 
@@ -2872,13 +2505,11 @@ async function toggleStudent(id){
    }
   );
 
-
   s.status=status;
 
   saveLocal();
 
   renderAll();
-
 
  }catch(e){
 
@@ -2892,34 +2523,31 @@ async function toggleStudent(id){
 }
 
 
-/* =========================
- STUDENTS
-========================= */
+/* =========================================================
+   STUDENTS RENDER
+========================================================= */
 
 function renderStudents(){
 
- const search=
+ const search =
  document.getElementById(
   "studentSearch"
  ).value.toLowerCase();
 
-
- const cls=
+ const cls =
  document.getElementById(
   "studentClassFilter"
  ).value;
 
-
- const status=
+ const status =
  document.getElementById(
   "studentStatusFilter"
  ).value;
 
-
- const list=
+ const list =
  db.students.filter(s=>{
 
-  const text=(
+  const text = (
 
    (s.student_name||"")+" "+
    (s.father_name||"")+" "+
@@ -2927,7 +2555,6 @@ function renderStudents(){
    (s.mobile_no||"")
 
   ).toLowerCase();
-
 
   return(
 
@@ -2944,24 +2571,21 @@ function renderStudents(){
 
  });
 
-
- const tbody=
+ const tbody =
  document.getElementById(
   "studentsTable"
  );
 
-
  if(!list.length){
 
-  tbody.innerHTML=
+  tbody.innerHTML =
   '<tr><td colspan="9" class="empty">No students found</td></tr>';
 
   return;
 
  }
 
-
- tbody.innerHTML=
+ tbody.innerHTML =
  list.map(s=>`
 
 <tr>
@@ -3033,61 +2657,44 @@ Delete
 }
 
 
-/* =========================
- CLASS CARDS
-========================= */
+/* =========================================================
+   CLASS CARDS
+========================================================= */
 
 function renderClassCards(){
 
- const dashboard=
+ const dashboard =
  document.getElementById(
   "dashboardClasses"
  );
 
-
- const all=
+ const all =
  document.getElementById(
   "allClasses"
  );
 
-
  let html="";
-
 
  CLASSES.forEach(cls=>{
 
-  const students=
+  const students =
   db.students.filter(
    s=>s.class_name===cls
   );
 
-
-  const active=
+  const active =
   students.filter(
    s=>s.status==="Active"
   ).length;
 
-
-  const totalFee=
-  db.fees
-  .filter(f=>{
-
-   const s=
-   db.students.find(
-    x=>x.id===f.student_id
-   );
-
-   return s?.class_name===cls;
-
-  })
-  .reduce(
-   (a,x)=>
-   a+Number(x.amount||0),
+  const totalFee =
+  students.reduce(
+   (a,s)=>
+   a+Number(s.monthly_fee||0),
    0
   );
 
-
-  html+=`
+  html += `
 
 <div
  class="class-card"
@@ -3105,7 +2712,7 @@ ${active} Active Students
 </p>
 
 <p>
-Fee: ${money(totalFee)}
+Expected Monthly: ${money(totalFee)}
 </p>
 
 </div>
@@ -3114,17 +2721,15 @@ Fee: ${money(totalFee)}
 
  });
 
-
  dashboard.innerHTML=html;
-
  all.innerHTML=html;
 
 }
 
 
-/* =========================
- OPEN CLASS
-========================= */
+/* =========================================================
+   OPEN CLASS
+========================================================= */
 
 function openClass(cls){
 
@@ -3132,29 +2737,25 @@ function openClass(cls){
   "classDetails"
  ).style.display="block";
 
-
  document.getElementById(
   "selectedClassTitle"
- ).textContent=
+ ).textContent =
  "📚 "+cls+" Students";
 
-
- const students=
+ const students =
  db.students.filter(
   s=>s.class_name===cls
  );
 
-
  document.getElementById(
   "classStudentCount"
- ).textContent=
+ ).textContent =
  students.length;
 
-
- const fees=
+ const fees =
  db.fees.filter(f=>{
 
-  const s=
+  const s =
   db.students.find(
    x=>x.id===f.student_id
   );
@@ -3163,66 +2764,57 @@ function openClass(cls){
 
  });
 
-
- const total=
+ const total =
  fees.reduce(
   (a,x)=>
   a+Number(x.amount||0),
   0
  );
 
-
- const paid=
+ const paid =
  fees.reduce(
   (a,x)=>
   a+Number(x.paid_amount||0),
   0
  );
 
-
- const due=
+ const due =
  fees.reduce(
   (a,x)=>
   a+Number(x.due_amount||0),
   0
  );
 
-
  document.getElementById(
   "classTotalFee"
- ).textContent=
+ ).textContent =
  money(total);
-
 
  document.getElementById(
   "classPaid"
- ).textContent=
+ ).textContent =
  money(paid);
-
 
  document.getElementById(
   "classDue"
- ).textContent=
+ ).textContent =
  money(due);
 
-
- const tbody=
+ const tbody =
  document.getElementById(
   "classStudentsTable"
  );
 
-
  if(!students.length){
 
-  tbody.innerHTML=
+  tbody.innerHTML =
   '<tr><td colspan="7" class="empty">No students in this class</td></tr>';
 
   return;
 
  }
 
-
- tbody.innerHTML=
+ tbody.innerHTML =
  students.map(s=>`
 
 <tr>
@@ -3276,20 +2868,18 @@ Profile
 }
 
 
-/* =========================
- FEES MODAL
-========================= */
+/* =========================================================
+   FEE MODAL
+========================================================= */
 
-function openFeeModal(){
+function openFeeModal(studentId=null){
 
- const select=
+ const select =
  document.getElementById(
   "feeStudent"
  );
 
-
  select.innerHTML="";
-
 
  db.students
  .filter(
@@ -3297,157 +2887,241 @@ function openFeeModal(){
  )
  .forEach(s=>{
 
-  const o=
+  const o =
   document.createElement("option");
-
 
   o.value=s.id;
 
-
-  o.textContent=
+  o.textContent =
   s.student_name+
   " - "+
   s.class_name;
-
 
   select.appendChild(o);
 
  });
 
-
  document.getElementById(
   "feeYear"
- ).value=
+ ).value =
  new Date().getFullYear();
-
 
  document.getElementById(
   "feeMonth"
- ).value=
+ ).value =
  new Date().getMonth()+1;
-
 
  document.getElementById(
   "paymentDate"
- ).value=
+ ).value =
  new Date()
  .toISOString()
  .slice(0,10);
-
 
  document.getElementById(
   "paidAmount"
  ).value="";
 
-
  document.getElementById(
   "feeNotes"
  ).value="";
 
+ document.getElementById(
+  "feeStatus"
+ ).value="Unpaid";
 
- updateFeeAmount();
+ if(studentId){
 
+  document.getElementById(
+   "feeStudent"
+  ).value=studentId;
+
+ }
+
+ loadExistingFee();
 
  openModal("feeModal");
 
 }
 
 
-document
-.getElementById("feeStudent")
-.addEventListener(
- "change",
- updateFeeAmount
-);
+/* =========================================================
+   LOAD EXISTING MONTHLY FEE
+========================================================= */
 
+function loadExistingFee(){
 
-function updateFeeAmount(){
-
- const id=
+ const studentId =
  document.getElementById(
   "feeStudent"
  ).value;
 
-
- const s=
- db.students.find(
-  x=>x.id===id
- );
-
-
- if(s){
-
-  document.getElementById(
-   "feeAmount"
-  ).value=
-  s.monthly_fee||0;
-
- }
-
-}
-
-
-/* =========================
- SAVE FEE
-========================= */
-
-async function saveFee(){
-
- const studentId=
- document.getElementById(
-  "feeStudent"
- ).value;
-
-
- const month=
+ const month =
  Number(
   document.getElementById(
    "feeMonth"
   ).value
  );
 
-
- const year=
+ const year =
  Number(
   document.getElementById(
    "feeYear"
   ).value
  );
 
+ const s =
+ db.students.find(
+  x=>x.id===studentId
+ );
 
- const amount=
+ const existing =
+ db.fees.find(x=>
+
+  x.student_id===studentId&&
+  Number(x.fee_month)===month&&
+  Number(x.fee_year)===year
+
+ );
+
+ if(existing){
+
+  document.getElementById(
+   "feeAmount"
+  ).value =
+  existing.amount||0;
+
+  document.getElementById(
+   "paidAmount"
+  ).value =
+  existing.paid_amount||0;
+
+  document.getElementById(
+   "paymentDate"
+  ).value =
+  existing.payment_date||"";
+
+  document.getElementById(
+   "feeStatus"
+  ).value =
+  existing.status||"Unpaid";
+
+  document.getElementById(
+   "feeNotes"
+  ).value =
+  existing.notes||"";
+
+ }else{
+
+  document.getElementById(
+   "feeAmount"
+  ).value =
+  s?.monthly_fee||0;
+
+  document.getElementById(
+   "paidAmount"
+  ).value="";
+
+  document.getElementById(
+   "paymentDate"
+  ).value =
+  new Date()
+  .toISOString()
+  .slice(0,10);
+
+  document.getElementById(
+   "feeStatus"
+  ).value =
+  "Unpaid";
+
+  document.getElementById(
+   "feeNotes"
+  ).value="";
+
+ }
+
+}
+
+
+/* =========================================================
+   FEE LISTENERS
+========================================================= */
+
+document
+.getElementById("feeStudent")
+.addEventListener(
+ "change",
+ loadExistingFee
+);
+
+document
+.getElementById("feeMonth")
+.addEventListener(
+ "change",
+ loadExistingFee
+);
+
+document
+.getElementById("feeYear")
+.addEventListener(
+ "change",
+ loadExistingFee
+);
+
+
+/* =========================================================
+   SAVE FEE
+========================================================= */
+
+async function saveFee(){
+
+ const studentId =
+ document.getElementById(
+  "feeStudent"
+ ).value;
+
+ const month =
+ Number(
+  document.getElementById(
+   "feeMonth"
+  ).value
+ );
+
+ const year =
+ Number(
+  document.getElementById(
+   "feeYear"
+  ).value
+ );
+
+ const amount =
  Number(
   document.getElementById(
    "feeAmount"
   ).value||0
  );
 
-
- const paid=
+ const paid =
  Number(
   document.getElementById(
    "paidAmount"
   ).value||0
  );
 
-
- const date=
+ const date =
  document.getElementById(
   "paymentDate"
  ).value;
 
-
- let status=
+ let status =
  document.getElementById(
   "feeStatus"
  ).value;
 
-
- const notes=
+ const notes =
  document.getElementById(
   "feeNotes"
  ).value.trim();
-
 
  if(!studentId){
 
@@ -3457,6 +3131,15 @@ async function saveFee(){
 
  }
 
+ if(amount<0||paid<0){
+
+  alert(
+   "Amount cannot be negative."
+  );
+
+  return;
+
+ }
 
  if(paid>amount){
 
@@ -3468,7 +3151,6 @@ async function saveFee(){
 
  }
 
-
  if(paid===0)
  status="Unpaid";
 
@@ -3478,8 +3160,7 @@ async function saveFee(){
  else
  status="Paid";
 
-
- const existing=
+ const existing =
  db.fees.find(x=>
 
   x.student_id===studentId&&
@@ -3488,10 +3169,8 @@ async function saveFee(){
 
  );
 
-
- const now=
+ const now =
  new Date().toISOString();
-
 
  try{
 
@@ -3501,20 +3180,24 @@ async function saveFee(){
     "This month's fee already exists. Update it?"
    ))return;
 
-
-   const row={
+   const row = {
 
     amount:amount,
+
     paid_amount:paid,
+
     due_amount:
     Math.max(amount-paid,0),
+
     payment_date:date,
+
     status:status,
+
     notes:notes,
+
     updated_at:now
 
    };
-
 
    await updateTable(
     TABLES.fees,
@@ -3522,16 +3205,14 @@ async function saveFee(){
     row
    );
 
-
    Object.assign(
     existing,
     row
    );
 
-
   }else{
 
-   const row={
+   const row = {
 
     id:crypto.randomUUID(),
 
@@ -3542,11 +3223,14 @@ async function saveFee(){
 
     amount:amount,
     paid_amount:paid,
+
     due_amount:
     Math.max(amount-paid,0),
 
     payment_date:date,
+
     status:status,
+
     notes:notes,
 
     created_at:now,
@@ -3554,17 +3238,14 @@ async function saveFee(){
 
    };
 
-
    await insertTable(
     TABLES.fees,
     row
    );
 
-
    db.fees.push(row);
 
   }
-
 
   saveLocal();
 
@@ -3572,11 +3253,9 @@ async function saveFee(){
 
   renderAll();
 
-
   alert(
    "Fee saved successfully."
   );
-
 
  }catch(e){
 
@@ -3590,44 +3269,39 @@ async function saveFee(){
 }
 
 
-/* =========================
- RENDER FEES
-========================= */
+/* =========================================================
+   RENDER FEES
+========================================================= */
 
 function renderFees(){
 
- const student=
+ const student =
  document.getElementById(
   "feeStudentFilter"
  ).value;
 
-
- const cls=
+ const cls =
  document.getElementById(
   "feeClassFilter"
  ).value;
 
-
- const month=
+ const month =
  document.getElementById(
   "feeMonthFilter"
  ).value;
 
-
- const year=
+ const year =
  document.getElementById(
   "feeYearFilter"
  ).value;
 
-
- const list=
+ const list =
  db.fees.filter(f=>{
 
-  const s=
+  const s =
   db.students.find(
    x=>x.id===f.student_id
   );
-
 
   return(
 
@@ -3649,31 +3323,27 @@ function renderFees(){
 
  });
 
-
- const tbody=
+ const tbody =
  document.getElementById(
   "feesTable"
  );
 
-
  if(!list.length){
 
-  tbody.innerHTML=
+  tbody.innerHTML =
   '<tr><td colspan="10" class="empty">No fee records found</td></tr>';
 
   return;
 
  }
 
-
- tbody.innerHTML=
+ tbody.innerHTML =
  list.map(f=>{
 
-  const s=
+  const s =
   db.students.find(
    x=>x.id===f.student_id
   );
-
 
   return `
 
@@ -3742,16 +3412,15 @@ Delete
 }
 
 
-/* =========================
- DELETE FEE
-========================= */
+/* =========================================================
+   DELETE FEE
+========================================================= */
 
 async function deleteFee(id){
 
  if(!confirm(
   "Delete this fee record?"
  ))return;
-
 
  try{
 
@@ -3760,12 +3429,10 @@ async function deleteFee(id){
    id
   );
 
-
-  db.fees=
+  db.fees =
   db.fees.filter(
    x=>x.id!==id
   );
-
 
   saveLocal();
 
@@ -3783,20 +3450,18 @@ async function deleteFee(id){
 }
 
 
-/* =========================
- ATTENDANCE
-========================= */
+/* =========================================================
+   ATTENDANCE MODAL
+========================================================= */
 
 function openAttendanceModal(){
 
- const select=
+ const select =
  document.getElementById(
   "attendanceStudent"
  );
 
-
  select.innerHTML="";
-
 
  db.students
  .filter(
@@ -3804,36 +3469,30 @@ function openAttendanceModal(){
  )
  .forEach(s=>{
 
-  const o=
+  const o =
   document.createElement("option");
-
 
   o.value=s.id;
 
-
-  o.textContent=
+  o.textContent =
   s.student_name+
   " - "+
   s.class_name;
-
 
   select.appendChild(o);
 
  });
 
-
  document.getElementById(
   "attendanceDate"
- ).value=
+ ).value =
  new Date()
  .toISOString()
  .slice(0,10);
 
-
  document.getElementById(
   "attendanceRemarks"
  ).value="";
-
 
  openModal(
   "attendanceModal"
@@ -3842,35 +3501,31 @@ function openAttendanceModal(){
 }
 
 
-/* =========================
- SAVE ATTENDANCE
-========================= */
+/* =========================================================
+   SAVE ATTENDANCE
+========================================================= */
 
 async function saveAttendance(){
 
- const studentId=
+ const studentId =
  document.getElementById(
   "attendanceStudent"
  ).value;
 
-
- const date=
+ const date =
  document.getElementById(
   "attendanceDate"
  ).value;
 
-
- const status=
+ const status =
  document.getElementById(
   "attendanceStatus"
  ).value;
 
-
- const remarks=
+ const remarks =
  document.getElementById(
   "attendanceRemarks"
  ).value.trim();
-
 
  if(!studentId||!date){
 
@@ -3882,8 +3537,7 @@ async function saveAttendance(){
 
  }
 
-
- const existing=
+ const existing =
  db.attendance.find(x=>
 
   x.student_id===studentId&&
@@ -3891,20 +3545,19 @@ async function saveAttendance(){
 
  );
 
-
  try{
 
   if(existing){
 
-   const row={
+   const row = {
 
     status:status,
     remarks:remarks,
+
     updated_at:
     new Date().toISOString()
 
    };
-
 
    await updateTable(
     TABLES.attendance,
@@ -3912,20 +3565,17 @@ async function saveAttendance(){
     row
    );
 
-
    Object.assign(
     existing,
     row
    );
 
-
   }else{
 
-   const now=
+   const now =
    new Date().toISOString();
 
-
-   const row={
+   const row = {
 
     id:crypto.randomUUID(),
 
@@ -3941,17 +3591,14 @@ async function saveAttendance(){
 
    };
 
-
    await insertTable(
     TABLES.attendance,
     row
    );
 
-
    db.attendance.push(row);
 
   }
-
 
   saveLocal();
 
@@ -3961,11 +3608,9 @@ async function saveAttendance(){
 
   renderAll();
 
-
   alert(
    "Attendance saved successfully."
   );
-
 
  }catch(e){
 
@@ -3979,32 +3624,29 @@ async function saveAttendance(){
 }
 
 
-/* =========================
- ATTENDANCE RENDER
-========================= */
+/* =========================================================
+   ATTENDANCE RENDER
+========================================================= */
 
 function renderAttendance(){
 
- const date=
+ const date =
  document.getElementById(
   "attendanceDateFilter"
  ).value;
 
-
- const cls=
+ const cls =
  document.getElementById(
   "attendanceClassFilter"
  ).value;
 
-
- const list=
+ const list =
  db.attendance.filter(a=>{
 
-  const s=
+  const s =
   db.students.find(
    x=>x.id===a.student_id
   );
-
 
   return(
 
@@ -4018,31 +3660,27 @@ function renderAttendance(){
 
  });
 
-
- const tbody=
+ const tbody =
  document.getElementById(
   "attendanceTable"
  );
 
-
  if(!list.length){
 
-  tbody.innerHTML=
+  tbody.innerHTML =
   '<tr><td colspan="5" class="empty">No attendance records found</td></tr>';
 
   return;
 
  }
 
-
- tbody.innerHTML=
+ tbody.innerHTML =
  list.map(a=>{
 
-  const s=
+  const s =
   db.students.find(
    x=>x.id===a.student_id
   );
-
 
   return `
 
@@ -4075,101 +3713,91 @@ ${esc(a.status)}
 }
 
 
-/* =========================
- RESULTS
-========================= */
+/* =========================================================
+   RESULTS MODAL
+========================================================= */
 
 function openResultModal(){
 
- const select=
+ const select =
  document.getElementById(
   "resultStudent"
  );
 
-
  select.innerHTML="";
-
 
  db.students.forEach(s=>{
 
-  const o=
+  const o =
   document.createElement("option");
-
 
   o.value=s.id;
 
-
-  o.textContent=
+  o.textContent =
   s.student_name+
   " - "+
   s.class_name;
-
 
   select.appendChild(o);
 
  });
 
-
  document.getElementById(
   "testDate"
- ).value=
+ ).value =
  new Date()
  .toISOString()
  .slice(0,10);
-
 
  openModal("resultModal");
 
 }
 
 
+/* =========================================================
+   SAVE RESULT
+========================================================= */
+
 async function saveResult(){
 
- const studentId=
+ const studentId =
  document.getElementById(
   "resultStudent"
  ).value;
 
-
- const test=
+ const test =
  document.getElementById(
   "testName"
  ).value.trim();
 
-
- const subject=
+ const subject =
  document.getElementById(
   "subject"
  ).value.trim();
 
-
- const total=
+ const total =
  Number(
   document.getElementById(
    "totalMarks"
   ).value||0
  );
 
-
- const obtained=
+ const obtained =
  Number(
   document.getElementById(
    "obtainedMarks"
   ).value||0
  );
 
-
- const date=
+ const date =
  document.getElementById(
   "testDate"
  ).value;
 
-
- const remarks=
+ const remarks =
  document.getElementById(
   "resultRemarks"
  ).value.trim();
-
 
  if(!studentId||!test||!subject){
 
@@ -4181,6 +3809,15 @@ async function saveResult(){
 
  }
 
+ if(total<=0){
+
+  alert(
+   "Total marks must be greater than 0."
+  );
+
+  return;
+
+ }
 
  if(obtained>total){
 
@@ -4192,12 +3829,10 @@ async function saveResult(){
 
  }
 
-
- const now=
+ const now =
  new Date().toISOString();
 
-
- const row={
+ const row = {
 
   id:crypto.randomUUID(),
 
@@ -4218,7 +3853,6 @@ async function saveResult(){
 
  };
 
-
  try{
 
   await insertTable(
@@ -4226,13 +3860,11 @@ async function saveResult(){
    row
   );
 
-
   db.results.push(row);
 
   saveLocal();
 
   closeModal("resultModal");
-
 
   [
    "testName",
@@ -4247,14 +3879,11 @@ async function saveResult(){
 
   });
 
-
   renderAll();
-
 
   alert(
    "Result saved successfully."
   );
-
 
  }catch(e){
 
@@ -4268,20 +3897,16 @@ async function saveResult(){
 }
 
 
-/* =========================
- GRADE
-========================= */
+/* =========================================================
+   GRADE
+========================================================= */
 
 function getGrade(p){
 
  if(p>=80)return"A+";
-
  if(p>=70)return"A";
-
  if(p>=60)return"B";
-
  if(p>=50)return"C";
-
  if(p>=40)return"D";
 
  return"F";
@@ -4289,32 +3914,29 @@ function getGrade(p){
 }
 
 
-/* =========================
- RESULTS RENDER
-========================= */
+/* =========================================================
+   RESULTS RENDER
+========================================================= */
 
 function renderResults(){
 
- const student=
+ const student =
  document.getElementById(
   "resultStudentFilter"
  ).value;
 
-
- const cls=
+ const cls =
  document.getElementById(
   "resultClassFilter"
  ).value;
 
-
- const list=
+ const list =
  db.results.filter(r=>{
 
-  const s=
+  const s =
   db.students.find(
    x=>x.id===r.student_id
   );
-
 
   return(
 
@@ -4328,33 +3950,29 @@ function renderResults(){
 
  });
 
-
- const tbody=
+ const tbody =
  document.getElementById(
   "resultsTable"
  );
 
-
  if(!list.length){
 
-  tbody.innerHTML=
+  tbody.innerHTML =
   '<tr><td colspan="9" class="empty">No results found</td></tr>';
 
   return;
 
  }
 
-
- tbody.innerHTML=
+ tbody.innerHTML =
  list.map(r=>{
 
-  const s=
+  const s =
   db.students.find(
    x=>x.id===r.student_id
   );
 
-
-  const p=
+  const p =
   r.total_marks
   ?
   (
@@ -4363,7 +3981,6 @@ function renderResults(){
    100
   )
   :0;
-
 
   return `
 
@@ -4396,73 +4013,62 @@ function renderResults(){
 }
 
 
-/* =========================
- DYNAMIC FILTERS
-========================= */
+/* =========================================================
+   DYNAMIC FILTERS
+========================================================= */
 
 function fillDynamicFilters(){
 
- const ids=[
+ const ids = [
 
   "feeStudentFilter",
   "resultStudentFilter"
 
  ];
 
-
  ids.forEach(id=>{
 
-  const el=
+  const el =
   document.getElementById(id);
-
 
   if(!el)return;
 
-
-  const current=
+  const current =
   el.value;
 
-
-  el.innerHTML=
+  el.innerHTML =
   '<option value="">All Students</option>';
-
 
   db.students.forEach(s=>{
 
-   const o=
+   const o =
    document.createElement("option");
-
 
    o.value=s.id;
 
-
-   o.textContent=
+   o.textContent =
    s.student_name+
    " - "+
    s.class_name;
 
-
    el.appendChild(o);
 
   });
-
 
   el.value=current;
 
  });
 
 
- const yearEl=
+ const yearEl =
  document.getElementById(
   "feeYearFilter"
  );
 
-
- const current=
+ const current =
  yearEl.value;
 
-
- const years=[
+ const years = [
 
   ...new Set(
 
@@ -4478,98 +4084,351 @@ function fillDynamicFilters(){
   (a,b)=>b-a
  );
 
-
- yearEl.innerHTML=
+ yearEl.innerHTML =
  '<option value="">All Years</option>';
-
 
  years.forEach(y=>{
 
-  const o=
+  const o =
   document.createElement("option");
 
-
   o.value=y;
-
   o.textContent=y;
-
 
   yearEl.appendChild(o);
 
  });
-
 
  yearEl.value=current;
 
 }
 
 
-/* =========================
- DASHBOARD
-========================= */
+/* =========================================================
+   CURRENT MONTH HELPERS
+========================================================= */
+
+function currentMonth(){
+
+ return new Date().getMonth()+1;
+
+}
+
+
+function currentYear(){
+
+ return new Date().getFullYear();
+
+}
+
+
+function currentMonthText(){
+
+ return MONTHS[
+  currentMonth()-1
+ ];
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
 
 function renderDashboard(){
 
- const total=
+ const total =
  db.students.length;
 
-
- const active=
+ const activeStudents =
  db.students.filter(
   s=>s.status==="Active"
- ).length;
+ );
 
+ const active =
+ activeStudents.length;
 
- const paid=
- db.fees.reduce(
+ const inactive =
+ total-active;
+
+ const cm =
+ currentMonth();
+
+ const cy =
+ currentYear();
+
+ /*
+  Expected fee = monthly fee of all active students
+ */
+
+ const expected =
+ activeStudents.reduce(
+  (a,s)=>
+  a+Number(s.monthly_fee||0),
+  0
+ );
+
+ /*
+  Only current month fees are counted
+ */
+
+ const currentFees =
+ db.fees.filter(f=>
+
+  Number(f.fee_month)===cm&&
+  Number(f.fee_year)===cy
+
+ );
+
+ const received =
+ currentFees.reduce(
   (a,x)=>
   a+Number(x.paid_amount||0),
   0
  );
 
+ const remaining =
+ Math.max(
+  expected-received,
+  0
+ );
+
+ /*
+  Pending students:
+  - no fee record
+  OR
+  - current fee has due
+ */
+
+ const pendingStudents =
+ activeStudents.filter(s=>{
+
+  const fee =
+  currentFees.find(
+   f=>f.student_id===s.id
+  );
+
+  if(!fee)
+  return true;
+
+  return Number(fee.due_amount||0)>0;
+
+ });
+
 
  document.getElementById(
   "totalStudents"
- ).textContent=total;
-
-
- document.getElementById(
-  "activeStudents"
- ).textContent=active;
-
+ ).textContent =
+ total;
 
  document.getElementById(
-  "inactiveStudents"
- ).textContent=
- total-active;
-
+  "expectedFee"
+ ).textContent =
+ money(expected);
 
  document.getElementById(
   "totalPaid"
- ).textContent=
- money(paid);
+ ).textContent =
+ money(received);
+
+ document.getElementById(
+  "remainingFee"
+ ).textContent =
+ money(remaining);
+
+ document.getElementById(
+  "pendingFees"
+ ).textContent =
+ pendingStudents.length;
+
+ document.getElementById(
+  "activeStudents"
+ ).textContent =
+ active;
+
+ document.getElementById(
+  "inactiveStudents"
+ ).textContent =
+ inactive;
+
+ document.getElementById(
+  "currentMonthName"
+ ).textContent =
+ currentMonthText();
 
 
- const recent=
+ /* ================= PENDING TABLE ================= */
+
+ const pendingBody =
+ document.getElementById(
+  "pendingFeesTable"
+ );
+
+ if(!pendingStudents.length){
+
+  pendingBody.innerHTML =
+  '<tr><td colspan="7" class="empty">🎉 No pending fees for this month</td></tr>';
+
+ }else{
+
+  pendingBody.innerHTML =
+  pendingStudents.map(s=>{
+
+   const fee =
+   currentFees.find(
+    f=>f.student_id===s.id
+   );
+
+   const monthly =
+   Number(s.monthly_fee||0);
+
+   const paid =
+   Number(fee?.paid_amount||0);
+
+   const due =
+   fee
+   ?
+   Number(fee.due_amount||0)
+   :
+   monthly;
+
+   return `
+
+<tr>
+
+<td>${esc(s.student_name)}</td>
+
+<td>${esc(s.father_name)}</td>
+
+<td>${esc(s.class_name)}</td>
+
+<td>${money(monthly)}</td>
+
+<td>${money(paid)}</td>
+
+<td>
+<span class="badge unpaid">
+${money(due)}
+</span>
+</td>
+
+<td>
+
+<button
+ class="btn small green"
+ onclick="openFeeForStudent('${s.id}')"
+>
+Collect
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+  }).join("");
+
+ }
+
+
+ /* ================= RECENT PAYMENTS ================= */
+
+ const paymentBody =
+ document.getElementById(
+  "recentPayments"
+ );
+
+ const payments =
+ [...currentFees]
+ .filter(
+  f=>Number(f.paid_amount||0)>0
+ )
+ .sort(
+  (a,b)=>
+  new Date(b.payment_date||0)-
+  new Date(a.payment_date||0)
+ )
+ .slice(0,10);
+
+ if(!payments.length){
+
+  paymentBody.innerHTML =
+  '<tr><td colspan="6" class="empty">No payments received this month</td></tr>';
+
+ }else{
+
+  paymentBody.innerHTML =
+  payments.map(f=>{
+
+   const s =
+   db.students.find(
+    x=>x.id===f.student_id
+   );
+
+   return `
+
+<tr>
+
+<td>${esc(s?.student_name||"Unknown")}</td>
+
+<td>${esc(s?.class_name||"-")}</td>
+
+<td>
+${MONTHS[
+ (Number(f.fee_month)||1)-1
+]}
+</td>
+
+<td>
+<b>${money(f.paid_amount)}</b>
+</td>
+
+<td>
+
+<span class="badge ${
+ f.status==="Paid"
+ ?"paid"
+ :"partial"
+}">
+
+${esc(f.status)}
+
+</span>
+
+</td>
+
+<td>${esc(f.payment_date||"-")}</td>
+
+</tr>
+
+`;
+
+  }).join("");
+
+ }
+
+
+ /* ================= RECENT STUDENTS ================= */
+
+ const recent =
  [...db.students]
  .reverse()
  .slice(0,10);
 
-
- const tbody=
+ const tbody =
  document.getElementById(
   "recentStudents"
  );
 
-
  if(!recent.length){
 
-  tbody.innerHTML=
+  tbody.innerHTML =
   '<tr><td colspan="4" class="empty">No students yet</td></tr>';
 
  }else{
 
-  tbody.innerHTML=
+  tbody.innerHTML =
   recent.map(s=>`
 
 <tr>
@@ -4603,65 +4462,70 @@ ${esc(s.status)}
 }
 
 
-/* =========================
- REPORTS
-========================= */
+/* =========================================================
+   OPEN FEE FOR PENDING STUDENT
+========================================================= */
+
+function openFeeForStudent(id){
+
+ openFeeModal(id);
+
+}
+
+
+/* =========================================================
+   REPORTS
+========================================================= */
 
 function renderReports(){
 
- const total=
+ const total =
  db.fees.reduce(
   (a,x)=>
   a+Number(x.amount||0),
   0
  );
 
-
- const paid=
+ const paid =
  db.fees.reduce(
   (a,x)=>
   a+Number(x.paid_amount||0),
   0
  );
 
-
- const due=
+ const due =
  db.fees.reduce(
   (a,x)=>
   a+Number(x.due_amount||0),
   0
  );
 
-
  document.getElementById(
   "reportTotalFee"
- ).textContent=
+ ).textContent =
  money(total);
-
 
  document.getElementById(
   "reportPaid"
- ).textContent=
+ ).textContent =
  money(paid);
-
 
  document.getElementById(
   "reportDue"
- ).textContent=
+ ).textContent =
  money(due);
-
 
  document.getElementById(
   "reportResults"
- ).textContent=
+ ).textContent =
  db.results.length;
 
 }
 
 
-/* =========================
- RENDER ALL
-========================= */
+/* =========================================================
+   RENDER ALL
+========================================================= */
 
 function renderAll(){
 
@@ -4684,68 +4548,59 @@ function renderAll(){
 }
 
 
-/* =========================
- STUDENT PROFILE
-========================= */
+/* =========================================================
+   STUDENT PROFILE
+========================================================= */
 
 function studentProfile(id){
 
- const s=
+ const s =
  db.students.find(
   x=>x.id===id
  );
 
-
  if(!s)return;
 
-
- const fees=
+ const fees =
  db.fees.filter(
   x=>x.student_id===id
  );
 
-
- const attendance=
+ const attendance =
  db.attendance.filter(
   x=>x.student_id===id
  );
 
-
- const results=
+ const results =
  db.results.filter(
   x=>x.student_id===id
  );
 
-
- const paid=
+ const paid =
  fees.reduce(
   (a,x)=>
   a+Number(x.paid_amount||0),
   0
  );
 
-
- const due=
+ const due =
  fees.reduce(
   (a,x)=>
   a+Number(x.due_amount||0),
   0
  );
 
-
- const present=
+ const present =
  attendance.filter(
   x=>x.status==="Present"
  ).length;
 
-
- const absent=
+ const absent =
  attendance.filter(
   x=>x.status==="Absent"
  ).length;
 
-
- const html=`
+ const html = `
 
 <h2>${esc(s.student_name)}</h2>
 
@@ -4832,7 +4687,6 @@ ${MONTHS[
 </table>
 `;
 
-
  showCustomModal(
   "Student Profile",
   html
@@ -4841,9 +4695,9 @@ ${MONTHS[
 }
 
 
-/* =========================
- PRINT
-========================= */
+/* =========================================================
+   PRINT
+========================================================= */
 
 function printPage(id){
 
@@ -4852,19 +4706,17 @@ function printPage(id){
   p.classList.remove("printing")
  );
 
-
- const page=
+ const page =
  document.getElementById(id);
 
+ if(!page)return;
 
  page.classList.add("printing");
-
 
  setTimeout(
   ()=>window.print(),
   100
  );
-
 
  setTimeout(
   ()=>page.classList.remove("printing"),
@@ -4874,28 +4726,25 @@ function printPage(id){
 }
 
 
-/* =========================
- PRINT FEE
-========================= */
+/* =========================================================
+   PRINT FEE
+========================================================= */
 
 function printFee(id){
 
- const f=
+ const f =
  db.fees.find(
   x=>x.id===id
  );
 
-
  if(!f)return;
 
-
- const s=
+ const s =
  db.students.find(
   x=>x.id===f.student_id
  );
 
-
- const html=`
+ const html = `
 
 <div style="
 max-width:600px;
@@ -4961,21 +4810,19 @@ Thank You
 </div>
 `;
 
-
  printHTML(html);
 
 }
 
 
-/* =========================
- PRINT HTML
-========================= */
+/* =========================================================
+   PRINT HTML
+========================================================= */
 
 function printHTML(html){
 
- const win=
+ const win =
  window.open("","_blank");
-
 
  if(!win){
 
@@ -4986,7 +4833,6 @@ function printHTML(html){
   return;
 
  }
-
 
  win.document.write(`
 
@@ -5030,11 +4876,9 @@ ${html}
 
 `);
 
-
  win.document.close();
 
  win.focus();
-
 
  setTimeout(
   ()=>win.print(),
@@ -5044,13 +4888,13 @@ ${html}
 }
 
 
-/* =========================
- BACKUP
-========================= */
+/* =========================================================
+   BACKUP
+========================================================= */
 
 function downloadBackup(){
 
- const data={
+ const data = {
 
   exported_at:
   new Date().toISOString(),
@@ -5064,8 +4908,7 @@ function downloadBackup(){
 
  };
 
-
- const blob=
+ const blob =
  new Blob(
   [
    JSON.stringify(
@@ -5079,60 +4922,54 @@ function downloadBackup(){
   }
  );
 
-
- const url=
+ const url =
  URL.createObjectURL(blob);
 
-
- const a=
+ const a =
  document.createElement("a");
-
 
  a.href=url;
 
-
- a.download=
+ a.download =
  "Bismillah_Academy_Backup_"+
  new Date()
  .toISOString()
  .slice(0,10)+
  ".json";
 
+ document.body.appendChild(a);
 
  a.click();
 
+ a.remove();
 
  URL.revokeObjectURL(url);
 
 }
 
 
-/* =========================
- RESTORE
-========================= */
+/* =========================================================
+   RESTORE
+========================================================= */
 
 function restoreBackup(event){
 
- const file=
+ const file =
  event.target.files[0];
-
 
  if(!file)return;
 
-
- const reader=
+ const reader =
  new FileReader();
 
-
- reader.onload=async()=>{
+ reader.onload = async()=>{
 
   try{
 
-   const data=
+   const data =
    JSON.parse(
     reader.result
    );
-
 
    if(
     !data.students||
@@ -5147,37 +4984,47 @@ function restoreBackup(event){
 
    }
 
-
    if(!confirm(
-    "Restore this backup?"
+    "Restore this backup locally?"
    ))return;
 
+   /*
+    Restore is LOCAL ONLY.
+    It does not delete Supabase data.
+   */
 
-   db.students=
+   db.students =
    data.students||[];
 
-
-   db.fees=
+   db.fees =
    data.fees||[];
 
-
-   db.attendance=
+   db.attendance =
    data.attendance||[];
 
-
-   db.results=
+   db.results =
    data.results||[];
 
+   if(data.settings){
+
+    db.settings = {
+
+     ...db.settings,
+     ...data.settings
+
+    };
+
+   }
 
    saveLocal();
 
+   updateSettingsScreen();
+
    renderAll();
 
-
    alert(
-    "Local backup restored."
+    "Local backup restored.\n\nSupabase data was not deleted."
    );
-
 
   }catch(e){
 
@@ -5189,91 +5036,93 @@ function restoreBackup(event){
 
  };
 
-
  reader.readAsText(file);
 
 }
 
 
-/* =========================
- CLEAR LOCAL
-========================= */
+/* =========================================================
+   CLEAR LOCAL
+========================================================= */
 
 function clearLocalData(){
 
  if(!confirm(
 
-  "Clear local backup/cache only? Supabase data will NOT be deleted."
+  "Clear local backup/cache only?\n\n"+
+  "Supabase data will NOT be deleted."
 
  ))return;
-
 
  localStorage.removeItem(
   "bea_local_backup"
  );
 
-
  alert(
-  "Local cache cleared. Supabase data remains safe."
+  "Local cache cleared.\n\n"+
+  "Supabase data remains safe."
  );
 
 }
 
 
-/* =========================
- SETTINGS
-========================= */
+/* =========================================================
+   SETTINGS
+========================================================= */
 
 function updateSettingsScreen(){
 
+ const name =
  document.getElementById(
   "academyNameSetting"
- ).value=
- db.settings.academyName;
+ );
 
-
+ const campus =
  document.getElementById(
   "campusSetting"
- ).value=
- db.settings.campus;
+ );
 
+ if(name)
+ name.value =
+ db.settings.academyName;
+
+ if(campus)
+ campus.value =
+ db.settings.campus;
 
  document.getElementById(
   "headName"
- ).textContent=
+ ).textContent =
  db.settings.academyName;
-
 
  document.getElementById(
   "headCampus"
- ).textContent=
- db.settings.campus;
+ ).textContent =
+ db.settings.campus+
+ " | 📞 0300-6884391";
 
 }
 
 
 function saveSettings(){
 
- db.settings.academyName=
+ db.settings.academyName =
  document.getElementById(
   "academyNameSetting"
  ).value.trim()
  ||
  "Bismillah Educational Academy";
 
-
- db.settings.campus=
+ db.settings.campus =
  document.getElementById(
   "campusSetting"
  ).value.trim()
  ||
  "Fazaia State Jahanian";
 
-
  saveLocal();
 
  updateSettingsScreen();
-
 
  alert(
   "Settings saved."
@@ -5282,17 +5131,16 @@ function saveSettings(){
 }
 
 
-/* =========================
- PASSWORD
-========================= */
+/* =========================================================
+   PASSWORD
+========================================================= */
 
 function changePassword(){
 
- const p=
+ const p =
  document.getElementById(
   "newPassword"
  ).value;
-
 
  if(p.length<4){
 
@@ -5304,17 +5152,13 @@ function changePassword(){
 
  }
 
-
  db.adminPassword=p;
 
-
  saveLocal();
-
 
  document.getElementById(
   "newPassword"
  ).value="";
-
 
  alert(
   "Password changed on this device."
@@ -5323,9 +5167,9 @@ function changePassword(){
 }
 
 
-/* =========================
- UTILITIES
-========================= */
+/* =========================================================
+   UTILITIES
+========================================================= */
 
 function money(v){
 
@@ -5347,34 +5191,30 @@ function esc(v){
 }
 
 
-/* =========================
- CUSTOM MODAL
-========================= */
+/* =========================================================
+   CUSTOM MODAL
+========================================================= */
 
 function showCustomModal(title,html){
 
- const old=
+ const old =
  document.getElementById(
   "customModal"
  );
 
+ if(old)
+ old.remove();
 
- if(old)old.remove();
-
-
- const modal=
+ const modal =
  document.createElement("div");
 
-
- modal.className=
+ modal.className =
  "modal show";
 
-
- modal.id=
+ modal.id =
  "customModal";
 
-
- modal.innerHTML=`
+ modal.innerHTML = `
 
 <div class="modal-box">
 
@@ -5406,15 +5246,14 @@ ${html}
 
 `;
 
-
  document.body.appendChild(modal);
 
 }
 
 
-/* =========================
- MODAL CLICK CLOSE
-========================= */
+/* =========================================================
+   MODAL CLICK CLOSE
+========================================================= */
 
 document
 .querySelectorAll(".modal")
@@ -5433,9 +5272,9 @@ document
 });
 
 
-/* =========================
- START
-========================= */
+/* =========================================================
+   START
+========================================================= */
 
 loadLocal();
 
